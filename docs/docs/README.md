@@ -9,11 +9,12 @@ This section contains comprehensive documentation for the Shortly API project, i
 - **[Environment Configuration](getting-started/environment.md)** - Environment variables and configuration
 
 ### API Reference
-- **[Root API](api/root.md)** - API overview and base information
-- **[Authentication](api/auth.md)** - User registration, login, and token management
-- **[Links](api/links.md)** - Short link creation and management
-- **[Users](api/users.md)** - User profile management
-- **[Redirect](api/redirect.md)** - Public link redirection
+- **[API Overview](api/README.md)** - Complete API reference guide
+- **[Base Route](api/base.md)** - API fundamentals and configuration
+- **[Authentication Routes](api/auth-routes.md)** - User registration, login, and token management
+- **[User Routes](api/user-routes.md)** - Profile management and account operations
+- **[Link Routes](api/link-routes.md)** - Short link creation and management
+- **[Redirect Routes](api/redirect-routes.md)** - Public link redirection
 
 ### Reference Materials
 - **[Authentication Guide](reference/authentication.md)** - JWT authentication details
@@ -28,7 +29,7 @@ This section contains comprehensive documentation for the Shortly API project, i
 ### For New Users
 1. Start with [Installation Guide](getting-started/installation.md)
 2. Configure your [Environment](getting-started/environment.md)
-3. Read the [API Overview](api/root.md)
+3. Read the [API Overview](api/README.md)
 
 ### For Developers
 1. Review [Authentication](reference/authentication.md) implementation
@@ -36,7 +37,7 @@ This section contains comprehensive documentation for the Shortly API project, i
 3. Understand [Data Models](reference/models.md)
 
 ### For API Integration
-1. Study [API Endpoints](api/root.md)
+1. Study [API Overview](api/README.md)
 2. Review [Rate Limits](reference/rate-limits.md)
 3. Handle [Errors](reference/errors.md) properly
 
@@ -73,8 +74,8 @@ The Shortly API is a robust URL shortening service built with:
 ### Beginners
 1. [Installation](getting-started/installation.md)
 2. [Environment Setup](getting-started/environment.md)
-3. [API Overview](api/root.md)
-4. [Authentication](api/auth.md)
+3. [API Overview](api/README.md)
+4. [Base Route](api/base.md)
 
 ### Intermediate Users
 1. [Security Features](reference/security.md)
@@ -85,8 +86,8 @@ The Shortly API is a robust URL shortening service built with:
 ### Advanced Users
 1. [Authentication Implementation](reference/authentication.md)
 2. [Pagination System](reference/pagination.md)
-3. [API Endpoints](api/links.md)
-4. [User Management](api/users.md)
+3. [Link Routes](api/link-routes.md)
+4. [User Management](api/user-routes.md)
 
 ## 🔍 Finding Information
 
@@ -97,8 +98,8 @@ The Shortly API is a robust URL shortening service built with:
 - **Testing & Integration:** [API Specs](../api-specs/)
 
 ### By Function
-- **User Management:** [Auth API](api/auth.md), [Users API](api/users.md)
-- **Link Operations:** [Links API](api/links.md), [Redirect](api/redirect.md)
+- **User Management:** [Auth Routes](api/auth-routes.md), [User Routes](api/user-routes.md)
+- **Link Operations:** [Link Routes](api/link-routes.md), [Redirect Routes](api/redirect-routes.md)
 - **Security:** [Security](reference/security.md), [Authentication](reference/authentication.md)
 - **Configuration:** [Environment](getting-started/environment.md)
 

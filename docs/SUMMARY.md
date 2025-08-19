@@ -7,11 +7,16 @@
 * [Documentation Guide](docs/README.md)
 * [Getting Started](docs/getting-started/installation.md)
 * [Environment Setup](docs/getting-started/environment.md)
-* [API Reference](docs/api/root.md)
-* [Authentication API](docs/api/auth.md)
-* [Links API](docs/api/links.md)
-* [Users API](docs/api/users.md)
-* [Redirect API](docs/api/redirect.md)
+
+### API Reference
+* [API Overview](docs/api/README.md)
+* [Base Route](docs/api/base.md)
+* [Authentication Routes](docs/api/auth-routes.md)
+* [User Routes](docs/api/user-routes.md)
+* [Link Routes](docs/api/link-routes.md)
+* [Redirect Routes](docs/api/redirect-routes.md)
+
+### Reference Materials
 * [Authentication Guide](docs/reference/authentication.md)
 * [Rate Limits](docs/reference/rate-limits.md)
 * [Security](docs/reference/security.md)
