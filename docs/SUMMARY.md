@@ -1,19 +1,25 @@
 # Summary
 
-- [Introduction](README.md)
-- Getting Started
-  - [Installation](getting-started/installation.md)
-  - [Environment Variables](getting-started/environment.md)
-- Reference
-  - [Authentication](reference/authentication.md)
-  - [Rate Limits](reference/rate-limits.md)
-  - [Errors](reference/errors.md)
-  - [Pagination](reference/pagination.md)
-  - [Security](reference/security.md)
-  - [Models](reference/models.md)
-- API
-  - [Root](api/root.md)
-  - [Auth](api/auth.md)
-  - [Users](api/users.md)
-  - [Links](api/links.md)
-  - [Redirect](api/redirect.md)
+* [Introduction](README.md)
+
+## 📚 Project Documentation
+
+* [Documentation Guide](docs/README.md)
+* [Getting Started](docs/getting-started/installation.md)
+* [Environment Setup](docs/getting-started/environment.md)
+* [API Reference](docs/api/root.md)
+* [Authentication API](docs/api/auth.md)
+* [Links API](docs/api/links.md)
+* [Users API](docs/api/users.md)
+* [Redirect API](docs/api/redirect.md)
+* [Authentication Guide](docs/reference/authentication.md)
+* [Rate Limits](docs/reference/rate-limits.md)
+* [Security](docs/reference/security.md)
+* [Data Models](docs/reference/models.md)
+* [Pagination](docs/reference/pagination.md)
+* [Error Handling](docs/reference/errors.md)
+
+## 🚀 API Specifications
+
+* [API Specs Guide](api-specs/README.md)
+* [OpenAPI Specification](api-specs/openapi.yaml)

@@ -1,0 +1,971 @@
+openapi: 3.0.3
+info:
+  title: Shortly API
+  description: |
+    A robust and scalable URL shortening REST API built with Express.js, TypeScript, and MongoDB.
+    
+    ## Features
+    - JWT Authentication with access/refresh tokens
+    - Role-based authorization (user, admin)
+    - Rate limiting per route type
+    - Password reset via email tokens
+    - Link creation, management, and analytics
+    - Public redirection with visit counters
+    
+    ## Base URLs
+    - Development: `http://localhost:3000`
+    - Production: `https://api.shortly.codewithsadee.com`
+    
+    ## Authentication
+    Most endpoints require authentication using JWT tokens. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-access-token>
+    ```
+    
+    Refresh tokens are automatically handled via HTTP-only cookies.
+    
+  version: 1.0.0
+  contact:
+    name: codewithsadee
+    url: https://github.com/codewithsadee
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://api.shortly.codewithsadee.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User registration, login, logout, and token management
+  - name: Links
+    description: Create, read, update, and delete short links
+  - name: Users
+    description: User profile management
+  - name: Redirect
+    description: Public link redirection
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Create a new user account with the specified role
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              user:
+                summary: Register as regular user
+                value:
+                  name: "Jane Doe"
+                  email: "jane@example.com"
+                  password: "password123"
+                  role: "user"
+              admin:
+                summary: Register as admin (whitelisted emails only)
+                value:
+                  name: "Admin User"
+                  email: "admin@company.com"
+                  password: "adminPass123"
+                  role: "admin"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Bad request - validation error or unauthorized admin role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: Conflict - email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate user and receive access token
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: "jane@example.com"
+              password: "password123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          headers:
+            Set-Cookie:
+              description: Refresh token cookie
+              schema:
+                type: string
+                example: "refreshToken=abc123; HttpOnly; Secure; SameSite=Strict"
+        '400':
+          description: Bad request - invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized - invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /auth/logout:
+    delete:
+      tags:
+        - Authentication
+      summary: User logout
+      description: Logout user and invalidate refresh token
+      operationId: logoutUser
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Logout successful
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+
+  /auth/refresh-token:
+    get:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Get new access token using refresh token from cookie
+      operationId: refreshToken
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+        '401':
+          description: Unauthorized - invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+
+  /auth/forgot-password:
+    post:
+      tags:
+        - Authentication
+      summary: Request password reset
+      description: Send password reset email to user
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+            example:
+              email: "jane@example.com"
+      responses:
+        '200':
+          description: Password reset email sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForgotPasswordResponse'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /auth/reset-password:
+    post:
+      tags:
+        - Authentication
+      summary: Reset password
+      description: Reset password using token from email
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+            example:
+              token: "reset_token_123"
+              new_password: "newPassword123"
+      responses:
+        '200':
+          description: Password reset successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetPasswordResponse'
+        '400':
+          description: Bad request - validation error or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /links:
+    post:
+      tags:
+        - Links
+      summary: Create short link
+      description: Generate a new short link for the given destination URL
+      operationId: createLink
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLinkRequest'
+            example:
+              title: "My Website"
+              destination: "https://example.com"
+              backHalf: "my-site"
+      responses:
+        '201':
+          description: Link created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkResponse'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '409':
+          description: Conflict - backHalf already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+    get:
+      tags:
+        - Links
+      summary: Get user's links
+      description: Retrieve paginated list of links created by the authenticated user
+      operationId: getMyLinks
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-based)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sortBy
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            enum: [createdAt, updatedAt, title, totalVisitCount]
+            default: createdAt
+        - name: sortOrder
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Links retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLinksResponse'
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /links/{linkId}:
+    parameters:
+      - name: linkId
+        in: path
+        required: true
+        description: Link ID
+        schema:
+          type: string
+          pattern: '^[0-9a-fA-F]{24}$'
+    put:
+      tags:
+        - Links
+      summary: Update link
+      description: Update an existing link (only by creator or admin)
+      operationId: updateLink
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLinkRequest'
+            example:
+              title: "Updated Website Title"
+              destination: "https://new-example.com"
+      responses:
+        '200':
+          description: Link updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkResponse'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden - not the creator or admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+    delete:
+      tags:
+        - Links
+      summary: Delete link
+      description: Delete a link (only by creator or admin)
+      operationId: deleteLink
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Link deleted successfully
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden - not the creator or admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get current user profile
+      description: Retrieve the authenticated user's profile information
+      operationId: getCurrentUser
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+    put:
+      tags:
+        - Users
+      summary: Update current user profile
+      description: Update the authenticated user's profile information
+      operationId: updateCurrentUser
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+            example:
+              name: "New Name"
+              email: "newemail@example.com"
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '409':
+          description: Conflict - email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+    delete:
+      tags:
+        - Users
+      summary: Delete current user account
+      description: Delete the authenticated user's account and all associated links
+      operationId: deleteCurrentUser
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: User account deleted successfully
+        '401':
+          description: Unauthorized - invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /{backHalf}:
+    get:
+      tags:
+        - Redirect
+      summary: Redirect to destination URL
+      description: Public endpoint to redirect short links to their destination URLs
+      operationId: redirectToDestination
+      parameters:
+        - name: backHalf
+          in: path
+          required: true
+          description: Short link identifier
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_-]+$'
+            example: "abc123"
+      responses:
+        '302':
+          description: Redirect to destination URL
+          headers:
+            Location:
+              description: Destination URL
+              schema:
+                type: string
+                example: "https://example.com"
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token
+
+  schemas:
+    # Request Schemas
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - role
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+          description: User's full name
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          minLength: 8
+          description: User's password (min 8 characters)
+        role:
+          type: string
+          enum: [user, admin]
+          description: User role (admin requires whitelisted email)
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          description: User's password
+
+    ForgotPasswordRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+
+    ResetPasswordRequest:
+      type: object
+      required:
+        - token
+        - new_password
+      properties:
+        token:
+          type: string
+          description: Password reset token from email
+        new_password:
+          type: string
+          minLength: 8
+          description: New password (min 8 characters)
+
+    CreateLinkRequest:
+      type: object
+      required:
+        - title
+        - destination
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Link title
+        destination:
+          type: string
+          format: uri
+          description: Destination URL
+        backHalf:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+          maxLength: 50
+          description: Custom back-half (optional, auto-generated if not provided)
+
+    UpdateLinkRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Link title
+        destination:
+          type: string
+          format: uri
+          description: Destination URL
+        backHalf:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+          maxLength: 50
+          description: Custom back-half
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+          description: User's full name
+        email:
+          type: string
+          format: email
+          description: User's email address
+        current_password:
+          type: string
+          description: Current password (required if changing password)
+        new_password:
+          type: string
+          minLength: 8
+          description: New password (min 8 characters)
+
+    # Response Schemas
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: User ID
+        name:
+          type: string
+          description: User's full name
+        email:
+          type: string
+          format: email
+          description: User's email address
+        role:
+          type: string
+          enum: [user, admin]
+          description: User role
+        totalVisitCount:
+          type: integer
+          description: Total visits across all user's links
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+
+    Link:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Link ID
+        title:
+          type: string
+          description: Link title
+        destination:
+          type: string
+          format: uri
+          description: Destination URL
+        backHalf:
+          type: string
+          description: Short link identifier
+        shortLink:
+          type: string
+          format: uri
+          description: Complete short URL
+        creator:
+          type: string
+          description: Creator's user ID
+        totalVisitCount:
+          type: integer
+          description: Total visit count
+        createdAt:
+          type: string
+          format: date-time
+          description: Link creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+
+    # API Response Schemas
+    RegisterResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accessToken:
+          type: string
+          description: JWT access token
+
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accessToken:
+          type: string
+          description: JWT access token
+
+    RefreshTokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: New JWT access token
+
+    ForgotPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Password reset email sent successfully"
+
+    ResetPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Password reset successfully"
+
+    LinkResponse:
+      type: object
+      properties:
+        link:
+          $ref: '#/components/schemas/Link'
+
+    UserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+
+    PaginatedLinksResponse:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        pagination:
+          type: object
+          properties:
+            currentPage:
+              type: integer
+              description: Current page number
+            totalPages:
+              type: integer
+              description: Total number of pages
+            totalItems:
+              type: integer
+              description: Total number of items
+            itemsPerPage:
+              type: integer
+              description: Number of items per page
+            hasNextPage:
+              type: boolean
+              description: Whether there's a next page
+            hasPrevPage:
+              type: boolean
+              description: Whether there's a previous page
+
+    # Error Schemas
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "ValidationError"
+        message:
+          type: string
+          example: "Validation failed"
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field name with error
+              message:
+                type: string
+                description: Error message for the field
+
+    UnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized"
+        message:
+          type: string
+          example: "Invalid or expired token"
+
+    ForbiddenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Forbidden"
+        message:
+          type: string
+          example: "Access denied"
+
+    NotFoundError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "NotFound"
+        message:
+          type: string
+          example: "Resource not found"
+
+    ConflictError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Conflict"
+        message:
+          type: string
+          example: "Resource already exists"
+
+    ServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "InternalServerError"
+        message:
+          type: string
+          example: "Something went wrong"
+
+# Security
+security:
+  - BearerAuth: []
