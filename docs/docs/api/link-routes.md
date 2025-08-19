@@ -1,4 +1,8 @@
-# Link Routes 🔗
+---
+icon: link-simple
+---
+
+# Link Routes
 
 ## Overview
 
@@ -11,18 +15,21 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 ## 🔑 Available Endpoints
 
 ### 1. Create Short Link
-- **Endpoint:** `POST /links`
-- **Description:** Generate a new short link for the given destination URL
-- **Authentication:** Required (Bearer token)
-- **Rate Limit:** 100 requests per 15 minutes
+
+* **Endpoint:** `POST /links`
+* **Description:** Generate a new short link for the given destination URL
+* **Authentication:** Required (Bearer token)
+* **Rate Limit:** 100 requests per 15 minutes
 
 **Headers Required:**
+
 ```http
 Authorization: Bearer <access_token>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "title": "My Website",
@@ -32,6 +39,7 @@ Content-Type: application/json
 ```
 
 **Response:** `201 Created`
+
 ```json
 {
   "link": {
@@ -49,33 +57,39 @@ Content-Type: application/json
 ```
 
 **Notes:**
-- `backHalf` is optional - auto-generated if not provided
-- `title` and `destination` are required
-- Auto-generates unique short link identifier
+
+* `backHalf` is optional - auto-generated if not provided
+* `title` and `destination` are required
+* Auto-generates unique short link identifier
 
 ### 2. Get User's Links
-- **Endpoint:** `GET /links`
-- **Description:** Retrieve paginated list of links created by the authenticated user
-- **Authentication:** Required (Bearer token)
-- **Rate Limit:** 100 requests per 15 minutes
+
+* **Endpoint:** `GET /links`
+* **Description:** Retrieve paginated list of links created by the authenticated user
+* **Authentication:** Required (Bearer token)
+* **Rate Limit:** 100 requests per 15 minutes
 
 **Headers Required:**
+
 ```http
 Authorization: Bearer <access_token>
 ```
 
 **Query Parameters:**
-- `page` - Page number (1-based, default: 1)
-- `limit` - Items per page (1-100, default: 10)
-- `sortBy` - Sort field (createdAt, updatedAt, title, totalVisitCount)
-- `sortOrder` - Sort direction (asc, desc)
+
+* `page` - Page number (1-based, default: 1)
+* `limit` - Items per page (1-100, default: 10)
+* `sortBy` - Sort field (createdAt, updatedAt, title, totalVisitCount)
+* `sortOrder` - Sort direction (asc, desc)
 
 **Example Request:**
+
 ```
 GET /links?page=1&limit=5&sortBy=totalVisitCount&sortOrder=desc
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "links": [
@@ -103,18 +117,21 @@ GET /links?page=1&limit=5&sortBy=totalVisitCount&sortOrder=desc
 ```
 
 ### 3. Update Link
-- **Endpoint:** `PUT /links/{linkId}`
-- **Description:** Update an existing link (only by creator or admin)
-- **Authentication:** Required (Bearer token)
-- **Rate Limit:** 100 requests per 15 minutes
+
+* **Endpoint:** `PUT /links/{linkId}`
+* **Description:** Update an existing link (only by creator or admin)
+* **Authentication:** Required (Bearer token)
+* **Rate Limit:** 100 requests per 15 minutes
 
 **Headers Required:**
+
 ```http
 Authorization: Bearer <access_token>
 Content-Type: application/json
 ```
 
 **Request Body (all fields optional):**
+
 ```json
 {
   "title": "Updated Website Title",
@@ -124,6 +141,7 @@ Content-Type: application/json
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "link": {
@@ -141,17 +159,20 @@ Content-Type: application/json
 ```
 
 **Notes:**
-- Only creator or admin can update links
-- All fields are optional - only update what you need
-- `backHalf` changes affect the short URL
+
+* Only creator or admin can update links
+* All fields are optional - only update what you need
+* `backHalf` changes affect the short URL
 
 ### 4. Delete Link
-- **Endpoint:** `DELETE /links/{linkId}`
-- **Description:** Delete a link (only by creator or admin)
-- **Authentication:** Required (Bearer token)
-- **Rate Limit:** 100 requests per 15 minutes
+
+* **Endpoint:** `DELETE /links/{linkId}`
+* **Description:** Delete a link (only by creator or admin)
+* **Authentication:** Required (Bearer token)
+* **Rate Limit:** 100 requests per 15 minutes
 
 **Headers Required:**
+
 ```http
 Authorization: Bearer <access_token>
 ```
@@ -159,30 +180,35 @@ Authorization: Bearer <access_token>
 **Response:** `204 No Content`
 
 **Notes:**
-- Only creator or admin can delete links
-- **Irreversible action** - link cannot be recovered
-- Visit count analytics are lost
+
+* Only creator or admin can delete links
+* **Irreversible action** - link cannot be recovered
+* Visit count analytics are lost
 
 ## 🔍 Request Validation
 
 ### Link Creation Validation
-- **title:** 1-100 characters, required
-- **destination:** Valid URL format, required
-- **backHalf:** 1-50 characters, alphanumeric + underscore + hyphen, optional
+
+* **title:** 1-100 characters, required
+* **destination:** Valid URL format, required
+* **backHalf:** 1-50 characters, alphanumeric + underscore + hyphen, optional
 
 ### Link Update Validation
-- **title:** 1-100 characters, optional
-- **destination:** Valid URL format, optional
-- **backHalf:** 1-50 characters, alphanumeric + underscore + hyphen, optional
+
+* **title:** 1-100 characters, optional
+* **destination:** Valid URL format, optional
+* **backHalf:** 1-50 characters, alphanumeric + underscore + hyphen, optional
 
 ### URL Validation Rules
-- **destination** must be valid HTTP/HTTPS URL
-- **backHalf** must be unique across all users
-- **backHalf** cannot contain special characters except `_` and `-`
+
+* **destination** must be valid HTTP/HTTPS URL
+* **backHalf** must be unique across all users
+* **backHalf** cannot contain special characters except `_` and `-`
 
 ## 📊 Response Models
 
 ### Link Response
+
 ```json
 {
   "link": {
@@ -200,6 +226,7 @@ Authorization: Bearer <access_token>
 ```
 
 ### Paginated Links Response
+
 ```json
 {
   "links": ["Link"],
@@ -215,30 +242,32 @@ Authorization: Bearer <access_token>
 ```
 
 ### Link Model Fields
-- **_id:** Unique link identifier (MongoDB ObjectId)
-- **title:** Link title (1-100 characters)
-- **destination:** Target URL (valid HTTP/HTTPS)
-- **backHalf:** Short link identifier (unique)
-- **shortLink:** Complete short URL
-- **creator:** User ID who created the link
-- **totalVisitCount:** Total number of visits
-- **createdAt:** Link creation timestamp
-- **updatedAt:** Last update timestamp
+
+* **\_id:** Unique link identifier (MongoDB ObjectId)
+* **title:** Link title (1-100 characters)
+* **destination:** Target URL (valid HTTP/HTTPS)
+* **backHalf:** Short link identifier (unique)
+* **shortLink:** Complete short URL
+* **creator:** User ID who created the link
+* **totalVisitCount:** Total number of visits
+* **createdAt:** Link creation timestamp
+* **updatedAt:** Last update timestamp
 
 ## 🛡️ Security Features
 
-- **Authentication Required** - All endpoints require valid access token
-- **Ownership Validation** - Users can only manage their own links
-- **Admin Override** - Admins can manage any link
-- **Rate Limiting** - Prevents abuse and spam
-- **Input Validation** - All data is validated and sanitized
-- **URL Sanitization** - Prevents malicious redirects
+* **Authentication Required** - All endpoints require valid access token
+* **Ownership Validation** - Users can only manage their own links
+* **Admin Override** - Admins can manage any link
+* **Rate Limiting** - Prevents abuse and spam
+* **Input Validation** - All data is validated and sanitized
+* **URL Sanitization** - Prevents malicious redirects
 
 ## 📋 Error Handling
 
 ### Common Error Responses
 
 **400 Bad Request - Validation Error**
+
 ```json
 {
   "error": "ValidationError",
@@ -253,6 +282,7 @@ Authorization: Bearer <access_token>
 ```
 
 **401 Unauthorized - Invalid Token**
+
 ```json
 {
   "error": "Unauthorized",
@@ -261,6 +291,7 @@ Authorization: Bearer <access_token>
 ```
 
 **403 Forbidden - Access Denied**
+
 ```json
 {
   "error": "Forbidden",
@@ -269,6 +300,7 @@ Authorization: Bearer <access_token>
 ```
 
 **404 Not Found - Link Not Found**
+
 ```json
 {
   "error": "NotFound",
@@ -277,6 +309,7 @@ Authorization: Bearer <access_token>
 ```
 
 **409 Conflict - BackHalf Already Exists**
+
 ```json
 {
   "error": "Conflict",
@@ -287,21 +320,25 @@ Authorization: Bearer <access_token>
 ## 🔄 Link Management Workflows
 
 ### 1. Link Creation
+
 ```
 Validate Input → Check BackHalf Uniqueness → Create Link → Return Link Data
 ```
 
 ### 2. Link Update
+
 ```
 Validate Input → Check Ownership → Update Link → Return Updated Data
 ```
 
 ### 3. Link Deletion
+
 ```
 Check Ownership → Delete Link → Return 204 No Content
 ```
 
 ### 4. Link Retrieval
+
 ```
 Authenticate User → Fetch User's Links → Apply Pagination → Return Results
 ```
@@ -309,30 +346,32 @@ Authenticate User → Fetch User's Links → Apply Pagination → Return Results
 ## 📈 Analytics Features
 
 ### Visit Tracking
-- **Real-time counting** - Updates with each redirect
-- **Aggregated data** - Total visits per link
-- **User analytics** - Combined visit counts in user profile
+
+* **Real-time counting** - Updates with each redirect
+* **Aggregated data** - Total visits per link
+* **User analytics** - Combined visit counts in user profile
 
 ### Performance Insights
-- **Popular links** - Sort by visit count
-- **Recent activity** - Sort by creation/update time
-- **User engagement** - Track link performance
+
+* **Popular links** - Sort by visit count
+* **Recent activity** - Sort by creation/update time
+* **User engagement** - Track link performance
 
 ## 🔗 Related Documentation
 
-- [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-- [Link Models](../reference/models.md) - Data schema and validation
-- [Pagination System](../reference/pagination.md) - Pagination implementation
-- [Authentication Guide](../reference/authentication.md) - JWT implementation
-- [Security Features](../reference/security.md) - Security best practices
-- [Error Handling](../reference/errors.md) - Comprehensive error guide
+* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
+* [Link Models](../reference/models.md) - Data schema and validation
+* [Pagination System](../reference/pagination.md) - Pagination implementation
+* [Authentication Guide](../reference/authentication.md) - JWT implementation
+* [Security Features](../reference/security.md) - Security best practices
+* [Error Handling](../reference/errors.md) - Comprehensive error guide
 
 ## 📝 Implementation Notes
 
-- **BackHalf generation** uses secure random strings
-- **URL validation** ensures safe redirects
-- **Ownership checks** prevent unauthorized access
-- **Rate limiting** applies per authenticated user
-- **Cascading updates** maintain data consistency
-- **Input sanitization** prevents injection attacks
-- **Visit counting** is atomic and real-time
+* **BackHalf generation** uses secure random strings
+* **URL validation** ensures safe redirects
+* **Ownership checks** prevent unauthorized access
+* **Rate limiting** applies per authenticated user
+* **Cascading updates** maintain data consistency
+* **Input sanitization** prevents injection attacks
+* **Visit counting** is atomic and real-time

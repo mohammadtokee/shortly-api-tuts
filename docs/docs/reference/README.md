@@ -1,5 +1,5 @@
 ---
-icon: shield-halved
+icon: arrow-progress
 ---
 
 # Guideline

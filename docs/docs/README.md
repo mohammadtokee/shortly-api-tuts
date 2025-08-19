@@ -1,5 +1,5 @@
 ---
-icon: globe
+icon: book-blank
 ---
 
 # Project Documentation
