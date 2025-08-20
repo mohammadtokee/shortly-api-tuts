@@ -1,12 +1,12 @@
 ---
-icon: up-right-from-square
+icon: arrow-right
 ---
 
 # Redirect Routes
 
 ## Overview
 
-Redirect routes handle the public redirection of short links to their destination URLs. This is the core functionality that makes URL shortening work - when users visit a short link, they are automatically redirected to the original destination.
+Redirect routes handle the public redirection of short links to their destination URLs. This endpoint is publicly accessible and includes visit tracking and analytics.
 
 ## 📚 OpenAPI Reference
 
@@ -14,221 +14,283 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 
 ## 🔑 Available Endpoints
 
-### 1. Redirect to Destination URL
+### 1. Redirect to Destination
 
 * **Endpoint:** `GET /{backHalf}`
 * **Description:** Public endpoint to redirect short links to their destination URLs
-* **Authentication:** Not required (public endpoint)
+* **Authentication:** Not required
 * **Rate Limit:** 1000 requests per 15 minutes
 
 **Path Parameters:**
 
 * `backHalf` - Short link identifier (required)
 
-**Example Request:**
+**Path Parameter Validation:**
+
+* Must contain only letters, numbers, underscores, and hyphens
+* Pattern: `^[a-zA-Z0-9_-]+$`
+* Examples: `abc123`, `my-site`, `blog_post`
+
+**Response:** `302 Found` (Redirect)
+
+**Headers Set:**
+
+```http
+Location: https://destination-url.com
+```
+
+**Notes:**
+
+* Automatically redirects to destination URL
+* Increments visit counter for analytics
+* No authentication required
+* Handles invalid/missing links gracefully
+
+## 🔍 Redirect Process
+
+### 1. Link Lookup
 
 ```
+Receive Request → Extract backHalf → Query Database → Find Link
+```
+
+### 2. Validation & Redirect
+
+```
+Validate Link → Check Availability → Increment Counter → Redirect
+```
+
+### 3. Error Handling
+
+```
+Link Not Found → Return 404 → JSON Error Response
+```
+
+## 📊 Visit Tracking
+
+### Analytics Implementation
+
+* **Real-time counting** - Visit counter increments immediately
+* **Atomic updates** - Database operations are atomic
+* **Performance optimized** - Minimal impact on redirect speed
+* **Aggregated data** - Counts available in user analytics
+
+### Visit Counter Update
+
+```typescript
+// Increment visit count atomically
+await Link.updateOne(
+  { _id: linkId },
+  { $inc: { totalVisitCount: 1 } }
+);
+
+// Also update user's total visit count
+await User.updateOne(
+  { _id: creatorId },
+  { $inc: { totalVisitCount: 1 } }
+);
+```
+
+## 🛡️ Security Features
+
+### Public Access
+
+* **No authentication required** - Accessible to all users
+* **Rate limiting** - Prevents abuse and spam
+* **Input validation** - Sanitizes backHalf parameter
+* **Error handling** - Graceful failure for invalid requests
+
+### Abuse Prevention
+
+* **IP-based rate limiting** - 1000 requests per 15 minutes per IP
+* **Request validation** - Ensures valid backHalf format
+* **Database protection** - Prevents injection attacks
+* **Performance monitoring** - Tracks unusual usage patterns
+
+## 📋 Error Handling
+
+### Common Error Responses
+
+**404 Not Found - Link Not Found**
+
+```json
+{
+  "code": "NotFound",
+  "message": "Link not found"
+}
+```
+
+**404 Not Found - Link Unavailable**
+
+```json
+{
+  "code": "NotFound",
+  "message": "This link is not available"
+}
+```
+
+**400 Bad Request - Invalid backHalf**
+
+```json
+{
+  "code": "BadRequest",
+  "message": "Invalid link identifier"
+}
+```
+
+## 🔧 Implementation Details
+
+### Route Handler
+
+```typescript
+// Redirect route implementation
+app.get('/:backHalf', async (req, res) => {
+  try {
+    const { backHalf } = req.params;
+    
+    // Validate backHalf format
+    if (!/^[a-zA-Z0-9_-]+$/.test(backHalf)) {
+      return res.status(400).json({
+        code: 'BadRequest',
+        message: 'Invalid link identifier'
+      });
+    }
+    
+    // Find link in database
+    const link = await Link.findOne({ backHalf });
+    
+    if (!link) {
+      return res.status(404).json({
+        code: 'NotFound',
+        message: 'Link not found'
+      });
+    }
+    
+    // Increment visit counter
+    await Promise.all([
+      Link.updateOne(
+        { _id: link._id },
+        { $inc: { totalVisitCount: 1 } }
+      ),
+      User.updateOne(
+        { _id: link.creator },
+        { $inc: { totalVisitCount: 1 } }
+      )
+    ]);
+    
+    // Redirect to destination
+    res.redirect(302, link.destination);
+    
+  } catch (error) {
+    logger.error('Redirect error:', error);
+    res.status(500).json({
+      code: 'ServerError',
+      message: 'Internal server error'
+    });
+  }
+});
+```
+
+### Performance Optimizations
+
+* **Database indexing** - Optimized queries on backHalf field
+* **Atomic operations** - Single database calls for updates
+* **Error caching** - Cache 404 responses for invalid links
+* **Response optimization** - Minimal processing for redirects
+
+## 📈 Analytics Integration
+
+### Visit Data
+
+* **Individual link counts** - Total visits per link
+* **User aggregation** - Combined visits across user's links
+* **Real-time updates** - Immediate counter increments
+* **Performance metrics** - Redirect speed and success rates
+
+### Data Flow
+
+```
+User Clicks Link → Redirect Request → Database Update → Analytics Update
+```
+
+## 🔗 Related Documentation
+
+* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
+* [Link Routes](link-routes.md) - Link management endpoints
+* [Data Models](../reference/models.md) - Link schema details
+* [Rate Limiting](../reference/rate-limits.md) - Public endpoint limits
+* [Error Handling](../reference/errors.md) - Error management
+
+## 📝 Implementation Notes
+
+* **Public endpoint** - No authentication required
+* **High performance** - Optimized for fast redirects
+* **Visit tracking** - Automatic analytics updates
+* **Error handling** - Graceful failure for invalid requests
+* **Rate limiting** - Prevents abuse and spam
+* **Database optimization** - Efficient queries and updates
+* **Security measures** - Input validation and sanitization
+
+## 🚀 Usage Examples
+
+### Basic Redirect
+
+```http
 GET /abc123
 ```
 
-**Response:** `302 Found`
-
+**Response:**
 ```http
 HTTP/1.1 302 Found
 Location: https://example.com
 ```
 
-**Notes:**
+### Invalid Link
 
-* **Public endpoint** - no authentication required
-* **Automatic redirect** - browsers follow the Location header
-* **Visit tracking** - increments visit counter automatically
-* **High rate limit** - designed for public access
+```http
+GET /invalid@link
+```
 
-## 🔍 Request Validation
+**Response:**
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
 
-### Path Parameter Validation
-
-* **backHalf:** 1-50 characters, alphanumeric + underscore + hyphen
-* **Pattern:** `^[a-zA-Z0-9_-]+$`
-* **Examples:** `abc123`, `my-site`, `product_link`
-
-### Validation Rules
-
-* **Length:** 1-50 characters
-* **Characters:** Letters (a-z, A-Z), numbers (0-9), underscore (\_), hyphen (-)
-* **No spaces:** Spaces are not allowed
-* **Case sensitive:** `ABC123` and `abc123` are different
-
-## 📊 Response Models
-
-### Successful Redirect
-
-* **Status Code:** `302 Found`
-* **Location Header:** Contains the destination URL
-* **Body:** Empty (browsers follow the redirect)
-
-### Error Response
-
-* **Status Code:** `404 Not Found`
-* **Content-Type:** `application/json`
-
-```json
 {
-  "error": "NotFound",
+  "code": "BadRequest",
+  "message": "Invalid link identifier"
+}
+```
+
+### Non-existent Link
+
+```http
+GET /nonexistent
+```
+
+**Response:**
+```http
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+  "code": "NotFound",
   "message": "Link not found"
 }
 ```
 
-## 🛡️ Security Features
+## 🔍 Monitoring & Debugging
 
-* **Public Access** - No authentication barriers
-* **Rate Limiting** - Prevents abuse and spam
-* **URL Validation** - Ensures safe redirects
-* **Input Sanitization** - Prevents injection attacks
-* **HTTPS Enforcement** - Secure redirects in production
+### Performance Metrics
 
-## 📋 Error Handling
+* **Redirect speed** - Response time measurements
+* **Success rates** - Successful vs failed redirects
+* **Error patterns** - Common failure reasons
+* **Usage patterns** - Peak usage times and volumes
 
-### Link Not Found
+### Debugging Tools
 
-```json
-{
-  "error": "NotFound",
-  "message": "Link not found"
-}
-```
-
-**Common Causes:**
-
-* Invalid backHalf format
-* Link has been deleted
-* Link never existed
-* Database connection issues
-
-## 🔄 Redirect Workflow
-
-### 1. Request Processing
-
-```
-Receive Request → Validate backHalf → Lookup Link → Process Redirect
-```
-
-### 2. Link Lookup
-
-```
-Parse backHalf → Query Database → Check Link Status → Return Result
-```
-
-### 3. Redirect Execution
-
-```
-Valid Link → Increment Counter → Set Location Header → Return 302
-```
-
-### 4. Error Handling
-
-```
-Invalid Link → Return 404 → Log Error → Provide Helpful Message
-```
-
-## 📈 Analytics Integration
-
-### Visit Tracking
-
-* **Real-time counting** - Each redirect increments the counter
-* **Automatic updates** - No additional API calls needed
-* **User aggregation** - Counts roll up to user profiles
-* **Performance metrics** - Track link popularity
-
-### Analytics Data
-
-* **Visit timestamps** - When redirects occur
-* **Geographic data** - IP-based location (if enabled)
-* **Referrer tracking** - Where traffic comes from
-* **Device information** - User agent data
-
-## 🌐 Browser Behavior
-
-### Automatic Redirect
-
-* **Browsers** automatically follow 302 redirects
-* **JavaScript** can handle redirects programmatically
-* **Mobile apps** can process redirect responses
-* **API clients** can choose to follow or not
-
-### Redirect Types
-
-* **302 Found** - Temporary redirect (current implementation)
-* **301 Moved Permanently** - Permanent redirect (future option)
-* **307 Temporary Redirect** - Method-preserving redirect
-
-## 🔗 Related Documentation
-
-* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-* [Link Models](broken-reference) - Data schema and validation
-* [Rate Limiting](broken-reference) - Rate limiting policies
-* [Error Handling](broken-reference) - Comprehensive error guide
-* [Security Features](broken-reference) - Security best practices
-
-## 📝 Implementation Notes
-
-### Performance Optimizations
-
-* **Database indexing** on backHalf field for fast lookups
-* **Caching layer** for frequently accessed links
-* **Connection pooling** for database efficiency
-* **Async processing** for visit counting
-
-### Scalability Features
-
-* **Load balancing** across multiple servers
-* **Database sharding** for high-volume links
-* **CDN integration** for global performance
-* **Rate limiting** per IP address
-
-### Monitoring & Logging
-
-* **Access logs** - Track all redirect requests
-* **Error monitoring** - Alert on failed redirects
-* **Performance metrics** - Response time tracking
-* **Usage analytics** - Traffic pattern analysis
-
-## 🚀 Use Cases
-
-### 1. Marketing Campaigns
-
-* **Short URLs** for social media posts
-* **Track engagement** with visit analytics
-* **A/B testing** different destinations
-* **Campaign performance** monitoring
-
-### 2. Content Sharing
-
-* **Blog posts** with trackable links
-* **Email newsletters** with click tracking
-* **Document sharing** with access analytics
-* **Media links** with engagement metrics
-
-### 3. Business Applications
-
-* **Product links** with conversion tracking
-* **Support articles** with usage analytics
-* **Internal tools** with access monitoring
-* **API documentation** with usage tracking
-
-## 🔧 Configuration Options
-
-### Rate Limiting
-
-* **Public redirects:** 1000 requests per 15 minutes
-* **Configurable limits** per environment
-* **IP-based tracking** for abuse prevention
-* **Whitelist support** for trusted sources
-
-### Redirect Behavior
-
-* **Status codes** - 302 (temporary) or 301 (permanent)
-* **Cache headers** - Control browser caching
-* **Security headers** - Additional protection layers
-* **Analytics tracking** - Enable/disable features
+* **Request logging** - Track all redirect attempts
+* **Error logging** - Detailed error information
+* **Performance monitoring** - Response time tracking
+* **Rate limit tracking** - Monitor abuse patterns

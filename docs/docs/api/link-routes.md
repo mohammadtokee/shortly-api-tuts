@@ -38,7 +38,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:** `201 Created`
+**Response:** `200 OK`
 
 ```json
 {
@@ -77,21 +77,35 @@ Authorization: Bearer <access_token>
 
 **Query Parameters:**
 
-* `page` - Page number (1-based, default: 1)
-* `limit` - Items per page (1-100, default: 10)
-* `sortBy` - Sort field (createdAt, updatedAt, title, totalVisitCount)
-* `sortOrder` - Sort direction (asc, desc)
+* `search` - Search term for link titles (default: "")
+* `sortby` - Sort field and order (default: createdAt_desc)
+* `offset` - Items to skip (0-based, default: 0)
+* `limit` - Items per page (1-100, default: 100)
+
+**Sort Options:**
+
+* `title_asc` - Title A-Z
+* `title_desc` - Title Z-A
+* `destination_asc` - Destination A-Z
+* `destination_desc` - Destination Z-A
+* `createdAt_asc` - Oldest first
+* `createdAt_desc` - Newest first
 
 **Example Request:**
 
 ```
-GET /links?page=1&limit=5&sortBy=totalVisitCount&sortOrder=desc
+GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 ```
 
 **Response:** `200 OK`
 
 ```json
 {
+  "total": 150,
+  "offset": 0,
+  "limit": 50,
+  "next": "/links?search=website&offset=50&limit=50&sortby=createdAt_desc",
+  "prev": null,
   "links": [
     {
       "_id": "link_id_1",
@@ -104,15 +118,7 @@ GET /links?page=1&limit=5&sortBy=totalVisitCount&sortOrder=desc
       "createdAt": "2024-01-01T00:00:00.000Z",
       "updatedAt": "2024-01-15T10:00:00.000Z"
     }
-  ],
-  "pagination": {
-    "currentPage": 1,
-    "totalPages": 3,
-    "totalItems": 25,
-    "itemsPerPage": 10,
-    "hasNextPage": true,
-    "hasPrevPage": false
-  }
+  ]
 }
 ```
 
@@ -140,23 +146,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:** `200 OK`
-
-```json
-{
-  "link": {
-    "_id": "link_id_here",
-    "title": "Updated Website Title",
-    "destination": "https://new-example.com",
-    "backHalf": "new-half",
-    "shortLink": "https://shortly.com/new-half",
-    "creator": "user_id_here",
-    "totalVisitCount": 150,
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-15T11:00:00.000Z"
-  }
-}
-```
+**Response:** `204 No Content`
 
 **Notes:**
 
@@ -229,15 +219,12 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "links": ["Link"],
-  "pagination": {
-    "currentPage": "number",
-    "totalPages": "number",
-    "totalItems": "number",
-    "itemsPerPage": "number",
-    "hasNextPage": "boolean",
-    "hasPrevPage": "boolean"
-  }
+  "total": "number",
+  "offset": "number",
+  "limit": "number",
+  "next": "string | null",
+  "prev": "string | null",
+  "links": ["Link"]
 }
 ```
 
@@ -270,14 +257,8 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "ValidationError",
-  "message": "Validation failed",
-  "details": [
-    {
-      "field": "destination",
-      "message": "Invalid URL format"
-    }
-  ]
+  "code": "BadRequest",
+  "message": "Validation failed"
 }
 ```
 
@@ -285,7 +266,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "Unauthorized",
+  "code": "Unauthorized",
   "message": "Invalid or expired token"
 }
 ```
@@ -294,7 +275,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "Forbidden",
+  "code": "AccessDenied",
   "message": "Access denied"
 }
 ```
@@ -303,7 +284,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "NotFound",
+  "code": "NotFound",
   "message": "Link not found"
 }
 ```
@@ -312,7 +293,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "Conflict",
+  "code": "Conflict",
   "message": "Back-half already exists"
 }
 ```
@@ -328,7 +309,7 @@ Validate Input → Check BackHalf Uniqueness → Create Link → Return Link Dat
 ### 2. Link Update
 
 ```
-Validate Input → Check Ownership → Update Link → Return Updated Data
+Validate Input → Check Ownership → Update Link → Return 204 No Content
 ```
 
 ### 3. Link Deletion
@@ -360,11 +341,11 @@ Authenticate User → Fetch User's Links → Apply Pagination → Return Results
 ## 🔗 Related Documentation
 
 * [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-* [Link Models](broken-reference) - Data schema and validation
-* [Pagination System](broken-reference) - Pagination implementation
-* [Authentication Guide](broken-reference) - JWT implementation
-* [Security Features](broken-reference) - Security best practices
-* [Error Handling](broken-reference) - Comprehensive error guide
+* [Data Models](../reference/models.md) - Data schema and validation
+* [Pagination System](../reference/pagination.md) - Pagination implementation
+* [Authentication Guide](../reference/authentication.md) - JWT implementation
+* [Security Features](../reference/security.md) - Security best practices
+* [Error Handling](../reference/errors.md) - Comprehensive error guide
 
 ## 📝 Implementation Notes
 

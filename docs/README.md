@@ -37,12 +37,13 @@ OpenAPI specifications and testing tools:
 
 ## 🚀 Features
 
-- JWT auth with access/refresh tokens (refresh in httpOnly cookie)
-- Role-based authorization (`user`, `admin`)
-- Rate limiting per route type
-- Password reset via email token
-- Link creation, listing with pagination, update, delete
-- Public redirection with visit counters
+- **JWT Authentication** 🔐 - Access/refresh tokens with secure cookie handling
+- **Role-based Authorization** 👥 - User and admin permissions
+- **Rate Limiting** ⏱️ - Per-route protection against abuse
+- **Password Reset** 📧 - Secure email-based password recovery
+- **Link Management** 🔗 - Create, update, delete, and monitor short links
+- **Analytics** 📊 - Real-time visit tracking and user statistics
+- **Public Redirection** 🔄 - Fast and secure link redirection
 
 ## 📖 Documentation Structure
 

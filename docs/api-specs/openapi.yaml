@@ -189,7 +189,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UnauthorizedError'
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/RefreshTokenExpiredError'
+                  - $ref: '#/components/schemas/RefreshTokenError'
 
   /auth/forgot-password:
     post:
@@ -207,12 +210,8 @@ paths:
             example:
               email: "jane@example.com"
       responses:
-        '200':
-          description: Password reset email sent
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForgotPasswordResponse'
+        '204':
+          description: Password reset email sent successfully
         '400':
           description: Bad request - validation error
           content:
@@ -246,21 +245,24 @@ paths:
             schema:
               $ref: '#/components/schemas/ResetPasswordRequest'
             example:
-              token: "reset_token_123"
-              new_password: "newPassword123"
+              password: "newPassword123"
       responses:
-        '200':
+        '204':
           description: Password reset successful
+        '401':
+          description: Unauthorized - invalid or expired token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResetPasswordResponse'
-        '400':
-          description: Bad request - validation error or invalid token
+                oneOf:
+                  - $ref: '#/components/schemas/ResetTokenExpiredError'
+                  - $ref: '#/components/schemas/ResetTokenError'
+        '404':
+          description: Token not found or already used
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/TokenNotFoundError'
         '500':
           description: Internal server error
           content:
@@ -288,7 +290,7 @@ paths:
               destination: "https://example.com"
               backHalf: "my-site"
       responses:
-        '201':
+        '200':
           description: Link created successfully
           content:
             application/json:
@@ -328,14 +330,29 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: page
+        - name: search
           in: query
-          description: Page number (1-based)
+          description: Search term for link titles
+          required: false
+          schema:
+            type: string
+            default: ""
+        - name: sortby
+          in: query
+          description: Sort field and order (format: field_order, e.g., createdAt_desc)
+          required: false
+          schema:
+            type: string
+            enum: [title_asc, title_desc, destination_asc, destination_desc, createdAt_asc, createdAt_desc]
+            default: createdAt_desc
+        - name: offset
+          in: query
+          description: Number of items to skip (0-based)
           required: false
           schema:
             type: integer
-            minimum: 1
-            default: 1
+            minimum: 0
+            default: 0
         - name: limit
           in: query
           description: Number of items per page
@@ -344,23 +361,7 @@ paths:
             type: integer
             minimum: 1
             maximum: 100
-            default: 10
-        - name: sortBy
-          in: query
-          description: Sort field
-          required: false
-          schema:
-            type: string
-            enum: [createdAt, updatedAt, title, totalVisitCount]
-            default: createdAt
-        - name: sortOrder
-          in: query
-          description: Sort order
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: desc
+            default: 100
       responses:
         '200':
           description: Links retrieved successfully
@@ -408,12 +409,8 @@ paths:
               title: "Updated Website Title"
               destination: "https://new-example.com"
       responses:
-        '200':
+        '204':
           description: Link updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LinkResponse'
         '400':
           description: Bad request - validation error
           content:
@@ -527,13 +524,10 @@ paths:
             example:
               name: "New Name"
               email: "newemail@example.com"
+              new_password: "newPassword123"
       responses:
-        '200':
+        '204':
           description: User profile updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
         '400':
           description: Bad request - validation error
           content:
@@ -614,6 +608,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
 
 components:
   securitySchemes:
@@ -678,13 +678,9 @@ components:
     ResetPasswordRequest:
       type: object
       required:
-        - token
-        - new_password
+        - password
       properties:
-        token:
-          type: string
-          description: Password reset token from email
-        new_password:
+        password:
           type: string
           minLength: 8
           description: New password (min 8 characters)
@@ -740,9 +736,6 @@ components:
           type: string
           format: email
           description: User's email address
-        current_password:
-          type: string
-          description: Current password (required if changing password)
         new_password:
           type: string
           minLength: 8
@@ -818,7 +811,26 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          type: object
+          properties:
+            _id:
+              type: string
+              description: User ID
+            name:
+              type: string
+              description: User's full name
+            email:
+              type: string
+              format: email
+              description: User's email address
+            passwordResetToken:
+              type: string
+              nullable: true
+              description: Password reset token
+            role:
+              type: string
+              enum: [user, admin]
+              description: User role
         accessToken:
           type: string
           description: JWT access token
@@ -827,7 +839,22 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          type: object
+          properties:
+            _id:
+              type: string
+              description: User ID
+            name:
+              type: string
+              description: User's full name
+            email:
+              type: string
+              format: email
+              description: User's email address
+            role:
+              type: string
+              enum: [user, admin]
+              description: User role
         accessToken:
           type: string
           description: JWT access token
@@ -868,58 +895,43 @@ components:
     PaginatedLinksResponse:
       type: object
       properties:
+        total:
+          type: integer
+          description: Total number of items
+        offset:
+          type: integer
+          description: Number of items skipped
+        limit:
+          type: integer
+          description: Number of items per page
+        next:
+          type: string
+          nullable: true
+          description: Next page link (null if no next page)
+        prev:
+          type: string
+          nullable: true
+          description: Previous page link (null if no previous page)
         links:
           type: array
           items:
             $ref: '#/components/schemas/Link'
-        pagination:
-          type: object
-          properties:
-            currentPage:
-              type: integer
-              description: Current page number
-            totalPages:
-              type: integer
-              description: Total number of pages
-            totalItems:
-              type: integer
-              description: Total number of items
-            itemsPerPage:
-              type: integer
-              description: Number of items per page
-            hasNextPage:
-              type: boolean
-              description: Whether there's a next page
-            hasPrevPage:
-              type: boolean
-              description: Whether there's a previous page
 
     # Error Schemas
     ValidationError:
       type: object
       properties:
-        error:
+        code:
           type: string
-          example: "ValidationError"
+          example: "BadRequest"
         message:
           type: string
           example: "Validation failed"
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: Field name with error
-              message:
-                type: string
-                description: Error message for the field
 
     UnauthorizedError:
       type: object
       properties:
-        error:
+        code:
           type: string
           example: "Unauthorized"
         message:
@@ -929,9 +941,9 @@ components:
     ForbiddenError:
       type: object
       properties:
-        error:
+        code:
           type: string
-          example: "Forbidden"
+          example: "AccessDenied"
         message:
           type: string
           example: "Access denied"
@@ -939,7 +951,7 @@ components:
     NotFoundError:
       type: object
       properties:
-        error:
+        code:
           type: string
           example: "NotFound"
         message:
@@ -949,7 +961,7 @@ components:
     ConflictError:
       type: object
       properties:
-        error:
+        code:
           type: string
           example: "Conflict"
         message:
@@ -959,12 +971,62 @@ components:
     ServerError:
       type: object
       properties:
-        error:
+        code:
           type: string
-          example: "InternalServerError"
+          example: "ServerError"
         message:
           type: string
-          example: "Something went wrong"
+          example: "Internal server error"
+
+    RefreshTokenExpiredError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "RefreshTokenExpired"
+        message:
+          type: string
+          example: "Refresh token expired"
+
+    RefreshTokenError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "RefreshTokenError"
+        message:
+          type: string
+          example: "Invalid refresh token"
+
+    TokenNotFoundError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "TokenNotFound"
+        message:
+          type: string
+          example: "This token is already used"
+
+    ResetTokenExpiredError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "ResetTokenExpired"
+        message:
+          type: string
+          example: "Your password reset token has been expired"
+
+    ResetTokenError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "ResetTokenError"
+        message:
+          type: string
+          example: "Invalid reset password token"
 
 # Security
 security:

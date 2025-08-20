@@ -69,31 +69,16 @@ Content-Type: application/json
 {
   "name": "John Smith",
   "email": "johnsmith@example.com",
-  "current_password": "oldPassword123",
   "new_password": "newSecurePassword123"
 }
 ```
 
-**Response:** `200 OK`
-
-```json
-{
-  "user": {
-    "_id": "user_id_here",
-    "name": "John Smith",
-    "email": "johnsmith@example.com",
-    "role": "user",
-    "totalVisitCount": 150,
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-15T11:00:00.000Z"
-  }
-}
-```
+**Response:** `204 No Content`
 
 **Notes:**
 
 * All fields are optional - only update what you need
-* Password change requires current password verification
+* Password change requires only new password
 * Email changes are validated for uniqueness
 * Role cannot be changed via this endpoint
 
@@ -115,27 +100,35 @@ Authorization: Bearer <access_token>
 **Notes:**
 
 * **Irreversible action** - account cannot be recovered
-* Deletes all links created by the user
-* Cascading deletion ensures data consistency
+* All user's links are automatically deleted
+* Visit count analytics are permanently lost
+* Requires valid authentication token
 
 ## 🔍 Request Validation
 
 ### Profile Update Validation
 
 * **name:** 2-50 characters, optional
-* **email:** Valid email format, optional, must be unique
-* **current\_password:** Required only when changing password
-* **new\_password:** Minimum 8 characters, required only when changing password
+* **email:** Valid email format, optional, unique
+* **new_password:** Minimum 8 characters, optional
 
-### Password Change Requirements
+### Email Validation Rules
 
-* **current\_password** must match existing password
-* **new\_password** must be different from current password
-* **new\_password** must meet security requirements
+* Must be valid email format
+* Must be unique across all users
+* Case-insensitive comparison
+* Automatic trimming and normalization
+
+### Password Validation Rules
+
+* Minimum 8 characters
+* No maximum length limit
+* Automatically hashed with bcrypt
+* Salt rounds: 12 (configurable)
 
 ## 📊 Response Models
 
-### User Profile Response
+### User Response
 
 ```json
 {
@@ -159,15 +152,16 @@ Authorization: Bearer <access_token>
 * **role:** User role (user or admin)
 * **totalVisitCount:** Total visits across all user's links
 * **createdAt:** Account creation timestamp
-* **updatedAt:** Last profile update timestamp
+* **updatedAt:** Last update timestamp
 
 ## 🛡️ Security Features
 
 * **Authentication Required** - All endpoints require valid access token
-* **Ownership Validation** - Users can only access their own profile
-* **Password Verification** - Current password required for changes
-* **Rate Limiting** - Prevents abuse and brute force attacks
+* **Self-Access Only** - Users can only access their own profile
+* **Password Security** - Passwords are securely hashed
 * **Input Validation** - All data is validated and sanitized
+* **Rate Limiting** - Prevents abuse and spam
+* **Data Protection** - Sensitive fields excluded from responses
 
 ## 📋 Error Handling
 
@@ -177,14 +171,8 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "ValidationError",
-  "message": "Validation failed",
-  "details": [
-    {
-      "field": "email",
-      "message": "Invalid email format"
-    }
-  ]
+  "code": "BadRequest",
+  "message": "Validation failed"
 }
 ```
 
@@ -192,7 +180,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "Unauthorized",
+  "code": "Unauthorized",
   "message": "Invalid or expired token"
 }
 ```
@@ -201,7 +189,7 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "Conflict",
+  "code": "Conflict",
   "message": "Email already registered"
 }
 ```
@@ -210,59 +198,75 @@ Authorization: Bearer <access_token>
 
 ```json
 {
-  "error": "InternalServerError",
-  "message": "Something went wrong"
+  "code": "ServerError",
+  "message": "Internal server error"
 }
 ```
 
-## 🔄 Profile Update Workflows
+## 🔄 User Management Workflows
 
-### 1. Name Update
-
-```
-Current Profile → Update Name → Profile Updated → Return New Data
-```
-
-### 2. Email Update
+### 1. Profile Retrieval
 
 ```
-Current Profile → Update Email → Validation → Profile Updated → Return New Data
+Authenticate User → Fetch User Data → Filter Sensitive Fields → Return Profile
 ```
 
-### 3. Password Update
+### 2. Profile Update
 
 ```
-Current Profile → Verify Current Password → Update Password → Profile Updated → Return New Data
+Validate Input → Check Email Uniqueness → Hash Password → Update Profile → Return 204
 ```
 
-### 4. Account Deletion
+### 3. Account Deletion
 
 ```
-Current Profile → Confirm Deletion → Delete Account & Links → 204 No Content
+Authenticate User → Delete All User Links → Delete User Account → Return 204
 ```
 
-## 📈 Analytics Integration
+## 📈 Analytics Features
 
-The user profile includes analytics data:
+### Visit Tracking
 
-* **totalVisitCount** - Aggregated visits across all user's links
-* **Real-time updates** - Counts update with each link visit
-* **Performance insights** - Track user engagement
+* **Aggregated counting** - Total visits across all user's links
+* **Real-time updates** - Increments with each link visit
+* **Performance metrics** - Track user engagement
+
+### User Insights
+
+* **Link performance** - Monitor link success rates
+* **Usage patterns** - Understand user behavior
+* **Growth metrics** - Track account development
+
+## 🔐 Security Considerations
+
+### Password Security
+
+* **Hashing algorithm:** bcrypt with salt
+* **Salt rounds:** 12 (configurable)
+* **No plain text storage** - Passwords are never stored in clear text
+* **Automatic hashing** - Applied on every password update
+
+### Data Protection
+
+* **Sensitive field exclusion** - Password and tokens never returned
+* **Input sanitization** - All data validated before storage
+* **SQL injection prevention** - MongoDB ODM protection
+* **XSS prevention** - Input sanitization and validation
 
 ## 🔗 Related Documentation
 
 * [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-* [User Models](broken-reference) - Data schema and validation
-* [Authentication Guide](broken-reference) - JWT implementation
-* [Security Features](broken-reference) - Security best practices
-* [Error Handling](broken-reference) - Comprehensive error guide
+* [Authentication Guide](../reference/authentication.md) - JWT implementation
+* [Data Models](../reference/models.md) - User schema details
+* [Security Features](../reference/security.md) - Security best practices
+* [Error Handling](../reference/errors.md) - Comprehensive error guide
 
 ## 📝 Implementation Notes
 
+* **Password hashing** uses industry-standard bcrypt algorithm
+* **Email validation** includes format and uniqueness checks
 * **Profile updates** are atomic operations
-* **Password changes** require current password verification
-* **Email uniqueness** is enforced across all users
-* **Role changes** require admin privileges (separate endpoint)
-* **Account deletion** is irreversible and cascades to links
+* **Account deletion** includes cascading link removal
+* **Visit counting** aggregates across all user's links
 * **Rate limiting** applies per authenticated user
-* **Input sanitization** prevents injection attacks
+* **Input validation** occurs at multiple levels

@@ -21,16 +21,37 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/register" method="post" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Request Body:**
 
-{% hint style="info" %}
-#### Notes
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "password123",
+  "role": "user"
+}
+```
+
+**Response:** `200 OK`
+
+```json
+{
+  "user": {
+    "_id": "user_id_here",
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "passwordResetToken": null,
+    "role": "user"
+  },
+  "accessToken": "jwt_access_token_here"
+}
+```
+
+**Notes:**
 
 * Sets `refreshToken` cookie automatically
 * Admin role requires whitelisted email addresses
-{% endhint %}
+* Returns user data and access token
 
 ### 2. User Login
 
@@ -39,15 +60,32 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/login" method="post" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Request Body:**
 
-{% hint style="info" %}
-#### **Headers Set:**
+```json
+{
+  "email": "jane@example.com",
+  "password": "password123"
+}
+```
+
+**Response:** `200 OK`
+
+```json
+{
+  "user": {
+    "_id": "user_id_here",
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "role": "user"
+  },
+  "accessToken": "jwt_access_token_here"
+}
+```
+
+**Headers Set:**
 
 * `Set-Cookie: refreshToken=token_value; HttpOnly; Secure; SameSite=Strict`
-{% endhint %}
 
 ### 3. User Logout
 
@@ -56,16 +94,19 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/logout" method="delete" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Headers Required:**
 
-{% hint style="info" %}
-#### Notes
+```http
+Authorization: Bearer <access_token>
+```
+
+**Response:** `204 No Content`
+
+**Notes:**
 
 * Invalidates the refresh token cookie
 * Requires valid access token
-{% endhint %}
+* Clears refresh token from database
 
 ### 4. Refresh Access Token
 
@@ -74,16 +115,19 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required (uses cookie)
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/refresh-token" method="get" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Response:** `200 OK`
 
-{% hint style="info" %}
-#### Notes
+```json
+{
+  "accessToken": "new_jwt_access_token_here"
+}
+```
+
+**Notes:**
 
 * Reads refresh token from HTTP-only cookie
 * Automatically handles token refresh
-{% endhint %}
+* Returns new access token
 
 ### 5. Forgot Password
 
@@ -92,9 +136,21 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/forgot-password" method="post" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Request Body:**
+
+```json
+{
+  "email": "jane@example.com"
+}
+```
+
+**Response:** `204 No Content`
+
+**Notes:**
+
+* Sends password reset email
+* Generates secure reset token
+* Token expires after 1 hour
 
 ### 6. Reset Password
 
@@ -103,15 +159,21 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/auth/reset-password" method="post" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/30c83fbf0a620ae434394fb0afcf59574cdbbb2be5228d103d06fb2a4ec8f5ea.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250820%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250820T221048Z&X-Amz-Expires=172800&X-Amz-Signature=7375a0ad16c6562e772c39f849c153600f42aaeac4190c5fa8a2b6c9ac0c4209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-{% endopenapi-operation %}
+**Request Body:**
 
-{% hint style="info" %}
-#### Notes
+```json
+{
+  "password": "newPassword123"
+}
+```
 
-* Token expires after 1 hour
-{% endhint %}
+**Response:** `204 No Content`
+
+**Notes:**
+
+* Token provided via query parameter
+* Password must meet security requirements
+* Sends confirmation email
 
 ## 🔐 Authentication Flow
 
@@ -143,9 +205,10 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 
 * **JWT Tokens** - Secure, stateless authentication
 * **HTTP-Only Cookies** - XSS protection for refresh tokens
+* **Secure Cookies** - HTTPS-only in production
+* **Token Expiration** - Automatic security refresh
 * **Rate Limiting** - Prevents brute force attacks
 * **Password Hashing** - bcrypt encryption
-* **Token Expiration** - Automatic security refresh
 
 ## 📋 Error Handling
 
@@ -155,14 +218,17 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 
 ```json
 {
-  "error": "ValidationError",
-  "message": "Validation failed",
-  "details": [
-    {
-      "field": "email",
-      "message": "Invalid email format"
-    }
-  ]
+  "code": "BadRequest",
+  "message": "Validation failed"
+}
+```
+
+**400 Bad Request - Admin Role Unauthorized**
+
+```json
+{
+  "code": "BadRequest",
+  "message": "You are not allowed to create an admin account"
 }
 ```
 
@@ -170,8 +236,26 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 
 ```json
 {
-  "error": "Unauthorized",
+  "code": "Unauthorized",
   "message": "Invalid email or password"
+}
+```
+
+**401 Unauthorized - Token Issues**
+
+```json
+{
+  "code": "RefreshTokenExpired",
+  "message": "Refresh token expired"
+}
+```
+
+**404 Not Found - User Not Found**
+
+```json
+{
+  "code": "NotFound",
+  "message": "User not found"
 }
 ```
 
@@ -179,7 +263,7 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 
 ```json
 {
-  "error": "Conflict",
+  "code": "Conflict",
   "message": "Email already registered"
 }
 ```
@@ -200,8 +284,7 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 
 ### Password Reset Validation
 
-* **token:** Required, must be valid
-* **new\_password:** Minimum 8 characters, required
+* **password:** Minimum 8 characters, required
 
 ## 📊 Response Models
 
@@ -213,7 +296,7 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
   "name": "string",
   "email": "string",
   "role": "user | admin",
-  "totalVisitCount": "number",
+  "passwordResetToken": "string | null",
   "createdAt": "date-time",
   "updatedAt": "date-time"
 }
@@ -227,18 +310,49 @@ Request Reset → Email Sent → User Clicks Link → Reset Password
 }
 ```
 
+## 🔧 Implementation Details
+
+### JWT Configuration
+
+```typescript
+// JWT token configuration
+const accessTokenConfig = {
+  secret: process.env.JWT_ACCESS_SECRET,
+  expiresIn: '1h'  // 1 hour
+};
+
+const refreshTokenConfig = {
+  secret: process.env.JWT_REFRESH_SECRET,
+  expiresIn: '7d'  // 7 days
+};
+```
+
+### Cookie Configuration
+
+```typescript
+// Cookie configuration
+res.cookie('refreshToken', refreshToken, {
+  maxAge: config.COOKIE_MAX_AGE,        // 7 days
+  httpOnly: config.NODE_ENV === 'production',
+  secure: true,                          // HTTPS only
+  sameSite: 'strict'                     // CSRF protection
+});
+```
+
 ## 🔗 Related Documentation
 
 * [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-* [Authentication Guide](broken-reference) - JWT implementation
-* [Security Features](broken-reference) - Security best practices
-* [User Models](broken-reference) - Data schema details
-* [Error Handling](broken-reference) - Comprehensive error guide
+* [Authentication Guide](../reference/authentication.md) - JWT implementation
+* [Security Features](../reference/security.md) - Security best practices
+* [Data Models](../reference/models.md) - User schema details
+* [Error Handling](../reference/errors.md) - Comprehensive error guide
 
 ## 📝 Implementation Notes
 
 * **Refresh tokens** are automatically managed via cookies
-* **Access tokens** should be included in Authorization header
+* **Access tokens** must be included in Authorization header
 * **Rate limiting** applies per IP address
 * **Password requirements** enforce security standards
 * **Email verification** is handled via reset tokens
+* **Admin role** requires whitelisted email addresses
+* **Token expiration** is enforced at multiple levels
