@@ -1,5 +1,5 @@
 ---
-icon: brackets-curly
+icon: code
 ---
 
 # API Reference
