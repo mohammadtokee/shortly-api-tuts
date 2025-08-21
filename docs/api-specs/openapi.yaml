@@ -13,17 +13,15 @@ info:
     - Public redirection with visit counters
     
     ## Base URLs
-    - Development: `http://localhost:3000`
-    - Production: `https://api.shortly.codewithsadee.com`
+    - Development: http://localhost:3000
+    - Production: https://api.shortly.codewithsadee.com
     
     ## Authentication
     Most endpoints require authentication using JWT tokens. Include the token in the Authorization header:
-    ```
+    
     Authorization: Bearer <your-access-token>
-    ```
     
     Refresh tokens are automatically handled via HTTP-only cookies.
-    
   version: 1.0.0
   contact:
     name: codewithsadee
