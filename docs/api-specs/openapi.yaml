@@ -268,7 +268,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerError'
 
-  /links:
+  /links/generate:
     post:
       tags:
         - Links
@@ -319,6 +319,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerError'
 
+  /links/my-links:
     get:
       tags:
         - Links
@@ -337,7 +338,7 @@ paths:
             default: ""
         - name: sortby
           in: query
-          description: Sort field and order (format: field_order, e.g., createdAt_desc)
+          description: Sort field and order (format > field_order, e.g., createdAt_desc)
           required: false
           schema:
             type: string
@@ -389,7 +390,7 @@ paths:
         schema:
           type: string
           pattern: '^[0-9a-fA-F]{24}$'
-    put:
+    patch:
       tags:
         - Links
       summary: Update link
@@ -505,7 +506,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerError'
 
-    put:
+    patch:
       tags:
         - Users
       summary: Update current user profile
