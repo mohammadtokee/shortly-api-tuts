@@ -14,7 +14,7 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 
 ## 🔑 Available Endpoints
 
-### 1. Redirect to Destination
+## 1. Redirect to Destination
 
 * **Endpoint:** `GET /{backHalf}`
 * **Description:** Public endpoint to redirect short links to their destination URLs
@@ -31,13 +31,9 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * Pattern: `^[a-zA-Z0-9_-]+$`
 * Examples: `abc123`, `my-site`, `blog_post`
 
-**Response:** `302 Found` (Redirect)
-
-**Headers Set:**
-
-```http
-Location: https://destination-url.com
-```
+{% openapi-operation spec="shortly-api" path="/{backHalf}" method="get" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162012Z&X-Amz-Expires=172800&X-Amz-Signature=f7f547ba8929b2710feb21edbdfa92adeaf33adafc01a9a291dd057fdf9ab20b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
