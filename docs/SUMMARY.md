@@ -2,7 +2,7 @@
 
 * [Introduction](README.md)
 
-## 📚 Project Documentation
+## Project Documentation
 
 * [Documentation Guide](docs/README.md)
 * [Getting Started](docs/getting-started/installation.md)
@@ -17,7 +17,7 @@
 * [Link Routes](docs/api/link-routes.md)
 * [Redirect Routes](docs/api/redirect-routes.md)
 
-## 📖 Reference Materials
+## Reference Materials
 
 * [Authentication Guide](docs/reference/authentication.md)
 * [Rate Limits](docs/reference/rate-limits.md)
@@ -26,7 +26,7 @@
 * [Pagination](docs/reference/pagination.md)
 * [Error Handling](docs/reference/errors.md)
 
-## 🚀 API Specifications
+## API Specifications
 
 * [API Specs Guide](api-specs/README.md)
 * [OpenAPI Specification](api-specifications/openapi-specification.md)
