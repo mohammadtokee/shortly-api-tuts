@@ -1,6 +1,0 @@
----
-icon: table
----
-
-# OpenAPI Specification
-
