@@ -29,4 +29,3 @@
 ## API Specifications
 
 * [API Specs Guide](api-specs/README.md)
-* [OpenAPI Specification](api-specifications/openapi-specification.md)

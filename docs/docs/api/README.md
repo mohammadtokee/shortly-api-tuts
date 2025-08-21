@@ -2,7 +2,7 @@
 icon: code
 ---
 
-# API Reference
+# API Overview
 
 ## Overview
 
@@ -19,35 +19,35 @@ All API endpoints are fully documented in the [OpenAPI Specification](../api-spe
 
 ## 🗂️ Route Categories
 
-### 1. [Base Route](api/base.md) 🏠
+### 1. [Base Route](base.md) 🏠
 
 * API fundamentals and configuration
 * Authentication requirements
 * Response formats and error handling
 * Rate limiting and security features
 
-### 2. [Authentication Routes](api/auth-routes.md) 🔐
+### 2. [Authentication Routes](auth-routes.md) 🔐
 
 * User registration and login
 * Token management and refresh
 * Password reset functionality
 * JWT authentication implementation
 
-### 3. [User Routes](api/user-routes.md) 👤
+### 3. [User Routes](user-routes.md) 👤
 
 * Profile management and updates
 * Account settings and preferences
 * User analytics and statistics
 * Account deletion and cleanup
 
-### 4. [Link Routes](api/link-routes.md) 🔗
+### 4. [Link Routes](link-routes.md) 🔗
 
 * Short link creation and management
 * Link updates and customization
 * Pagination and sorting options
 * Link analytics and performance
 
-### 5. [Redirect Routes](api/redirect-routes.md) 🔄
+### 5. [Redirect Routes](redirect-routes.md) 🔄
 
 * Public link redirection
 * Visit tracking and analytics
@@ -58,23 +58,23 @@ All API endpoints are fully documented in the [OpenAPI Specification](../api-spe
 
 ### For New Users
 
-1. Start with [Base Route](api/base.md) for API fundamentals
-2. Review [Authentication Routes](api/auth-routes.md) for setup
-3. Explore [Link Routes](api/link-routes.md) for core functionality
+1. Start with [Base Route](base.md) for API fundamentals
+2. Review [Authentication Routes](auth-routes.md) for setup
+3. Explore [Link Routes](link-routes.md) for core functionality
 
 ### For Developers
 
-1. Check [Base Route](api/base.md) for configuration details
-2. Study [Authentication Routes](api/auth-routes.md) for security
-3. Review [User Routes](api/user-routes.md) for profile management
-4. Examine [Link Routes](api/link-routes.md) for business logic
+1. Check [Base Route](base.md) for configuration details
+2. Study [Authentication Routes](auth-routes.md) for security
+3. Review [User Routes](user-routes.md) for profile management
+4. Examine [Link Routes](link-routes.md) for business logic
 
 ### For API Integration
 
 1. Use [OpenAPI Specification](../api-specs/openapi.yaml) for complete details
-2. Reference [Base Route](api/base.md) for common patterns
-3. Follow [Authentication Routes](api/auth-routes.md) for security setup
-4. Implement [Link Routes](api/link-routes.md) for core features
+2. Reference [Base Route](base.md) for common patterns
+3. Follow [Authentication Routes](auth-routes.md) for security setup
+4. Implement [Link Routes](link-routes.md) for core features
 
 ## 📊 API Statistics
 
@@ -201,11 +201,11 @@ Authorization: Bearer <your-access-token>
 
 ## 🚀 Getting Started
 
-1. **Review** [**Base Route**](api/base.md) for API fundamentals
-2. **Set up authentication** using [Authentication Routes](api/auth-routes.md)
-3. **Create your first link** with [Link Routes](api/link-routes.md)
-4. **Manage your profile** via [User Routes](api/user-routes.md)
-5. **Test redirection** with [Redirect Routes](api/redirect-routes.md)
+1. **Review** [**Base Route**](base.md) for API fundamentals
+2. **Set up authentication** using [Authentication Routes](auth-routes.md)
+3. **Create your first link** with [Link Routes](link-routes.md)
+4. **Manage your profile** via [User Routes](user-routes.md)
+5. **Test redirection** with [Redirect Routes](redirect-routes.md)
 
 ## 🔗 External Resources
 
