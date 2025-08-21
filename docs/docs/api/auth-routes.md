@@ -21,31 +21,9 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Request Body:**
-
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "password": "password123",
-  "role": "user"
-}
-```
-
-**Response:** `200 OK`
-
-```json
-{
-  "user": {
-    "_id": "user_id_here",
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "passwordResetToken": null,
-    "role": "user"
-  },
-  "accessToken": "jwt_access_token_here"
-}
-```
+{% openapi-operation spec="shortly-api" path="/auth/register" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -60,28 +38,9 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Request Body:**
-
-```json
-{
-  "email": "jane@example.com",
-  "password": "password123"
-}
-```
-
-**Response:** `200 OK`
-
-```json
-{
-  "user": {
-    "_id": "user_id_here",
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "role": "user"
-  },
-  "accessToken": "jwt_access_token_here"
-}
-```
+{% openapi-operation spec="shortly-api" path="/auth/login" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Headers Set:**
 
@@ -94,13 +53,9 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/auth/logout" method="delete" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -115,13 +70,9 @@ Authorization: Bearer <access_token>
 * **Authentication:** Not required (uses cookie)
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Response:** `200 OK`
-
-```json
-{
-  "accessToken": "new_jwt_access_token_here"
-}
-```
+{% openapi-operation spec="shortly-api" path="/auth/refresh-token" method="get" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -136,15 +87,9 @@ Authorization: Bearer <access_token>
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Request Body:**
-
-```json
-{
-  "email": "jane@example.com"
-}
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/auth/forgot-password" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -159,12 +104,6 @@ Authorization: Bearer <access_token>
 * **Authentication:** Not required
 * **Rate Limit:** 5 requests per 15 minutes
 
-**Request Body:**
-
-```json
-{
-  "password": "newPassword123"
-}
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/auth/reset-password" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T154625Z&X-Amz-Expires=172800&X-Amz-Signature=fab6be0115b00c44a9dfabeb0a5585a4040777e9717e21b9547326445f98dca2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
