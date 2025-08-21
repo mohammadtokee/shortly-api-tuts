@@ -1,8 +1,8 @@
 ---
-icon: list-numbers
+icon: pager
 ---
 
-# Pagination System
+# Pagination
 
 ## Overview
 
@@ -12,10 +12,10 @@ The Shortly API implements a flexible pagination system using offset-based pagin
 
 ### Offset-Based Pagination
 
-- **Offset** - Number of items to skip (0-based)
-- **Limit** - Number of items per page (1-100)
-- **Total** - Total number of items available
-- **Navigation** - Next and previous page links
+* **Offset** - Number of items to skip (0-based)
+* **Limit** - Number of items per page (1-100)
+* **Total** - Total number of items available
+* **Navigation** - Next and previous page links
 
 ### Pagination Parameters
 
@@ -45,14 +45,14 @@ interface RequestQuery {
 
 ### Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `total` | Number | Total items matching the query |
-| `offset` | Number | Current offset position |
-| `limit` | Number | Items per page |
-| `next` | String | URL for next page (null if no next) |
-| `prev` | String | URL for previous page (null if no prev) |
-| `items` | Array | Array of items for current page |
+| Field    | Type   | Description                             |
+| -------- | ------ | --------------------------------------- |
+| `total`  | Number | Total items matching the query          |
+| `offset` | Number | Current offset position                 |
+| `limit`  | Number | Items per page                          |
+| `next`   | String | URL for next page (null if no next)     |
+| `prev`   | String | URL for previous page (null if no prev) |
+| `items`  | Array  | Array of items for current page         |
 
 ## 🔍 Search and Filtering
 
@@ -73,10 +73,10 @@ const links = await Link.find({ creator: userId })
 
 ### Search Features
 
-- **Case-insensitive** - Search works regardless of case
-- **Word boundaries** - Matches complete words only
-- **Partial matching** - Finds links containing search terms
-- **Real-time** - Search applied on every request
+* **Case-insensitive** - Search works regardless of case
+* **Word boundaries** - Matches complete words only
+* **Partial matching** - Finds links containing search terms
+* **Real-time** - Search applied on every request
 
 ## 📋 Sorting Options
 
@@ -90,16 +90,16 @@ const [sortField, sortOrder] = sortby.split('_');
 
 ### Available Sort Fields
 
-| Field | Description | Example |
-|-------|-------------|---------|
-| `title` | Link title | `title_asc`, `title_desc` |
-| `destination` | Target URL | `destination_asc`, `destination_desc` |
-| `createdAt` | Creation date | `createdAt_asc`, `createdAt_desc` |
+| Field         | Description   | Example                               |
+| ------------- | ------------- | ------------------------------------- |
+| `title`       | Link title    | `title_asc`, `title_desc`             |
+| `destination` | Target URL    | `destination_asc`, `destination_desc` |
+| `createdAt`   | Creation date | `createdAt_asc`, `createdAt_desc`     |
 
 ### Sort Order Values
 
-- **`asc`** - Ascending order (A-Z, 0-9, oldest first)
-- **`desc`** - Descending order (Z-A, 9-0, newest first)
+* **`asc`** - Ascending order (A-Z, 0-9, oldest first)
+* **`desc`** - Descending order (Z-A, 9-0, newest first)
 
 ## 🔗 Navigation Links
 
@@ -128,10 +128,10 @@ const prevLink = generatePrevLink({
 
 ### Link Structure
 
-- **Base URL** - API endpoint path
-- **Query Parameters** - Preserved across navigation
-- **Dynamic Values** - Calculated based on current state
-- **Null Handling** - Returns null when no navigation available
+* **Base URL** - API endpoint path
+* **Query Parameters** - Preserved across navigation
+* **Dynamic Values** - Calculated based on current state
+* **Null Handling** - Returns null when no navigation available
 
 ## 📱 Pagination Examples
 
@@ -142,6 +142,7 @@ GET /links?offset=0&limit=100&sortby=createdAt_desc
 ```
 
 **Response:**
+
 ```json
 {
   "total": 250,
@@ -160,6 +161,7 @@ GET /links?offset=100&limit=100&sortby=createdAt_desc
 ```
 
 **Response:**
+
 ```json
 {
   "total": 250,
@@ -178,6 +180,7 @@ GET /links?offset=200&limit=100&sortby=createdAt_desc
 ```
 
 **Response:**
+
 ```json
 {
   "total": 250,
@@ -198,6 +201,7 @@ GET /links?search=website&offset=0&limit=50&sortby=title_asc
 ```
 
 **Response:**
+
 ```json
 {
   "total": 25,
@@ -230,38 +234,38 @@ const defaultQuery = {
 
 ### Limits and Constraints
 
-- **Minimum limit:** 1 item per page
-- **Maximum limit:** 100 items per page
-- **Minimum offset:** 0 (no negative values)
-- **Search length:** No maximum (handled by regex)
+* **Minimum limit:** 1 item per page
+* **Maximum limit:** 100 items per page
+* **Minimum offset:** 0 (no negative values)
+* **Search length:** No maximum (handled by regex)
 
 ## 🚀 Performance Considerations
 
 ### Database Optimization
 
-- **Indexes** - Proper indexing on sort fields
-- **Lean queries** - Use `.lean()` for read-only operations
-- **Selective fields** - Only fetch required fields
-- **Efficient sorting** - Use indexed fields for sorting
+* **Indexes** - Proper indexing on sort fields
+* **Lean queries** - Use `.lean()` for read-only operations
+* **Selective fields** - Only fetch required fields
+* **Efficient sorting** - Use indexed fields for sorting
 
 ### Memory Management
 
-- **Result limiting** - Prevent excessive memory usage
-- **Streaming** - Consider streaming for large datasets
-- **Caching** - Cache frequently accessed pages
+* **Result limiting** - Prevent excessive memory usage
+* **Streaming** - Consider streaming for large datasets
+* **Caching** - Cache frequently accessed pages
 
 ## 🔗 Related Documentation
 
-- [Link Routes](../api/link-routes.md) - Link management endpoints
-- [Data Models](models.md) - Database schema details
-- [API Base Route](../api/base.md) - General API information
-- [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
+* [Link Routes](../api/link-routes.md) - Link management endpoints
+* [Data Models](models.md) - Database schema details
+* [API Base Route](../api/base.md) - General API information
+* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
 
 ## 📝 Implementation Notes
 
-- **Offset-based pagination** provides consistent performance
-- **Search functionality** works across all text fields
-- **Sorting** is applied before pagination for accuracy
-- **Navigation links** are generated dynamically
-- **Performance** scales well with large datasets
-- **Flexible** - Easy to customize for different use cases
+* **Offset-based pagination** provides consistent performance
+* **Search functionality** works across all text fields
+* **Sorting** is applied before pagination for accuracy
+* **Navigation links** are generated dynamically
+* **Performance** scales well with large datasets
+* **Flexible** - Easy to customize for different use cases

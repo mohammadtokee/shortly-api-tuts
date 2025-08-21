@@ -1,5 +1,5 @@
 ---
-icon: alert-triangle
+icon: triangle-exclamation
 ---
 
 # Error Handling
@@ -21,37 +21,38 @@ The Shortly API implements comprehensive error handling with consistent response
 
 ### Error Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `code` | String | Machine-readable error identifier |
-| `message` | String | Human-readable error description |
+| Field     | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `code`    | String | Machine-readable error identifier |
+| `message` | String | Human-readable error description  |
 
 ## 📋 HTTP Status Codes
 
 ### Success Responses
 
-- **200 OK** - Request successful
-- **201 Created** - Resource created (not used in this API)
-- **204 No Content** - Request successful, no content returned
+* **200 OK** - Request successful
+* **201 Created** - Resource created (not used in this API)
+* **204 No Content** - Request successful, no content returned
 
 ### Client Error Responses
 
-- **400 Bad Request** - Invalid request data
-- **401 Unauthorized** - Authentication required or failed
-- **403 Forbidden** - Access denied
-- **404 Not Found** - Resource not found
-- **409 Conflict** - Resource already exists
-- **429 Too Many Requests** - Rate limit exceeded
+* **400 Bad Request** - Invalid request data
+* **401 Unauthorized** - Authentication required or failed
+* **403 Forbidden** - Access denied
+* **404 Not Found** - Resource not found
+* **409 Conflict** - Resource already exists
+* **429 Too Many Requests** - Rate limit exceeded
 
 ### Server Error Responses
 
-- **500 Internal Server Error** - Unexpected server error
+* **500 Internal Server Error** - Unexpected server error
 
 ## 🔐 Authentication Errors
 
 ### 401 Unauthorized
 
 **Invalid or Expired Token**
+
 ```json
 {
   "code": "Unauthorized",
@@ -60,6 +61,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Refresh Token Expired**
+
 ```json
 {
   "code": "RefreshTokenExpired",
@@ -68,6 +70,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Invalid Refresh Token**
+
 ```json
 {
   "code": "RefreshTokenError",
@@ -76,6 +79,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Reset Token Expired**
+
 ```json
 {
   "code": "ResetTokenExpired",
@@ -84,6 +88,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Invalid Reset Token**
+
 ```json
 {
   "code": "ResetTokenError",
@@ -94,6 +99,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 403 Forbidden
 
 **Access Denied**
+
 ```json
 {
   "code": "AccessDenied",
@@ -102,6 +108,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Link Modification Denied**
+
 ```json
 {
   "code": "AccessDenied",
@@ -110,6 +117,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Link Deletion Denied**
+
 ```json
 {
   "code": "AccessDenied",
@@ -122,6 +130,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 400 Bad Request
 
 **General Validation Error**
+
 ```json
 {
   "code": "BadRequest",
@@ -130,6 +139,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Admin Role Unauthorized**
+
 ```json
 {
   "code": "BadRequest",
@@ -142,6 +152,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 404 Not Found
 
 **Link Not Found**
+
 ```json
 {
   "code": "NotFound",
@@ -150,6 +161,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Link Unavailable**
+
 ```json
 {
   "code": "NotFound",
@@ -158,6 +170,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Token Not Found**
+
 ```json
 {
   "code": "TokenNotFound",
@@ -170,6 +183,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 409 Conflict
 
 **Email Already Exists**
+
 ```json
 {
   "code": "Conflict",
@@ -178,6 +192,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **BackHalf Already Exists**
+
 ```json
 {
   "code": "Conflict",
@@ -190,6 +205,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 429 Too Many Requests
 
 **Rate Limit Exceeded**
+
 ```json
 {
   "code": "TooManyRequests",
@@ -202,6 +218,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ### 500 Internal Server Error
 
 **General Server Error**
+
 ```json
 {
   "code": "ServerError",
@@ -210,6 +227,7 @@ The Shortly API implements comprehensive error handling with consistent response
 ```
 
 **Specific Operation Errors**
+
 ```json
 {
   "code": "ServerError",
@@ -256,49 +274,49 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 
 ### Logging Strategy
 
-- **Error Details** - Full error stack traces
-- **Request Context** - User ID, endpoint, request data
-- **Timestamp** - When the error occurred
-- **Environment** - Development vs production logging
+* **Error Details** - Full error stack traces
+* **Request Context** - User ID, endpoint, request data
+* **Timestamp** - When the error occurred
+* **Environment** - Development vs production logging
 
 ### Log Levels
 
-- **Error** - Application errors and exceptions
-- **Warn** - Warning conditions
-- **Info** - General information
-- **Debug** - Detailed debugging information
+* **Error** - Application errors and exceptions
+* **Warn** - Warning conditions
+* **Info** - General information
+* **Debug** - Detailed debugging information
 
 ## 🛡️ Security Considerations
 
 ### Error Information Disclosure
 
-- **Production** - Generic error messages
-- **Development** - Detailed error information
-- **Sensitive Data** - Never expose in error responses
-- **Stack Traces** - Only in development mode
+* **Production** - Generic error messages
+* **Development** - Detailed error information
+* **Sensitive Data** - Never expose in error responses
+* **Stack Traces** - Only in development mode
 
 ### Error Rate Monitoring
 
-- **High Error Rates** - Monitor for potential attacks
-- **Pattern Analysis** - Identify common error sources
-- **Alerting** - Notify administrators of issues
-- **Metrics** - Track error frequency and types
+* **High Error Rates** - Monitor for potential attacks
+* **Pattern Analysis** - Identify common error sources
+* **Alerting** - Notify administrators of issues
+* **Metrics** - Track error frequency and types
 
 ## 🔄 Error Recovery
 
 ### Automatic Recovery
 
-- **Rate Limits** - Automatically reset every 15 minutes
-- **Token Expiration** - Automatic refresh mechanism
-- **Database Issues** - Connection retry logic
-- **Network Issues** - Request retry with backoff
+* **Rate Limits** - Automatically reset every 15 minutes
+* **Token Expiration** - Automatic refresh mechanism
+* **Database Issues** - Connection retry logic
+* **Network Issues** - Request retry with backoff
 
 ### Manual Recovery
 
-- **Authentication** - Re-authenticate with valid credentials
-- **Rate Limits** - Wait for limit reset or reduce request frequency
-- **Validation Errors** - Correct request data and retry
-- **Server Errors** - Contact support if persistent
+* **Authentication** - Re-authenticate with valid credentials
+* **Rate Limits** - Wait for limit reset or reduce request frequency
+* **Validation Errors** - Correct request data and retry
+* **Server Errors** - Contact support if persistent
 
 ## 📱 Client Error Handling
 
@@ -343,16 +361,16 @@ async function apiCall(endpoint, options) {
 
 ## 🔗 Related Documentation
 
-- [Authentication Guide](authentication.md) - Auth error details
-- [Rate Limits](rate-limits.md) - Rate limit errors
-- [Security Features](security.md) - Security error handling
-- [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
+* [Authentication Guide](authentication.md) - Auth error details
+* [Rate Limits](rate-limits.md) - Rate limit errors
+* [Security Features](security.md) - Security error handling
+* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
 
 ## 📝 Implementation Notes
 
-- **Consistent Format** - All errors follow the same structure
-- **HTTP Compliance** - Proper status codes for each error type
-- **User-Friendly** - Clear, actionable error messages
-- **Developer-Friendly** - Detailed logging for debugging
-- **Security-Conscious** - No sensitive information in responses
-- **Internationalization** - Error messages can be localized
+* **Consistent Format** - All errors follow the same structure
+* **HTTP Compliance** - Proper status codes for each error type
+* **User-Friendly** - Clear, actionable error messages
+* **Developer-Friendly** - Detailed logging for debugging
+* **Security-Conscious** - No sensitive information in responses
+* **Internationalization** - Error messages can be localized

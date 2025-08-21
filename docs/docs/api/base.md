@@ -1,5 +1,5 @@
 ---
-icon: home
+icon: house
 ---
 
 # Base Route
@@ -108,11 +108,11 @@ Authorization: Bearer <access_token>
 
 ### Standard Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `data` | Any | Response data (success only) |
-| `message` | String | Human-readable message |
-| `code` | String | Error code (error only) |
+| Field     | Type   | Description                  |
+| --------- | ------ | ---------------------------- |
+| `data`    | Any    | Response data (success only) |
+| `message` | String | Human-readable message       |
+| `code`    | String | Error code (error only)      |
 
 ## 🚦 Rate Limiting
 
@@ -124,12 +124,12 @@ Authorization: Bearer <access_token>
 
 ### Endpoint Limits
 
-| Category | Limit | Window |
-|----------|-------|---------|
+| Category             | Limit         | Window     |
+| -------------------- | ------------- | ---------- |
 | **Public Endpoints** | 1000 requests | 15 minutes |
-| **Authentication** | 5 requests | 15 minutes |
-| **User Management** | 50 requests | 15 minutes |
-| **Link Management** | 100 requests | 15 minutes |
+| **Authentication**   | 5 requests    | 15 minutes |
+| **User Management**  | 50 requests   | 15 minutes |
+| **Link Management**  | 100 requests  | 15 minutes |
 
 ### Rate Limit Headers
 
@@ -198,22 +198,23 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 ### HTTP Status Codes
 
-| Status | Description | Usage |
-|--------|-------------|-------|
-| **200** | OK | Successful requests with data |
-| **201** | Created | Resource creation (not used) |
-| **204** | No Content | Successful requests without data |
-| **400** | Bad Request | Validation errors |
-| **401** | Unauthorized | Authentication required |
-| **403** | Forbidden | Access denied |
-| **404** | Not Found | Resource not found |
-| **409** | Conflict | Resource already exists |
-| **429** | Too Many Requests | Rate limit exceeded |
-| **500** | Internal Server Error | Server errors |
+| Status  | Description           | Usage                            |
+| ------- | --------------------- | -------------------------------- |
+| **200** | OK                    | Successful requests with data    |
+| **201** | Created               | Resource creation (not used)     |
+| **204** | No Content            | Successful requests without data |
+| **400** | Bad Request           | Validation errors                |
+| **401** | Unauthorized          | Authentication required          |
+| **403** | Forbidden             | Access denied                    |
+| **404** | Not Found             | Resource not found               |
+| **409** | Conflict              | Resource already exists          |
+| **429** | Too Many Requests     | Rate limit exceeded              |
+| **500** | Internal Server Error | Server errors                    |
 
 ### Error Response Examples
 
 **400 Bad Request**
+
 ```json
 {
   "code": "BadRequest",
@@ -222,6 +223,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 ```
 
 **401 Unauthorized**
+
 ```json
 {
   "code": "Unauthorized",
@@ -230,6 +232,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 ```
 
 **429 Too Many Requests**
+
 ```json
 {
   "code": "TooManyRequests",
@@ -305,4 +308,4 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 ***
 
-**Ready to start?** Check the [API status](#api-status) and then explore the [authentication routes](auth-routes.md) to get your API credentials.
+**Ready to start?** Check the [API status](base.md#api-status) and then explore the [authentication routes](auth-routes.md) to get your API credentials.

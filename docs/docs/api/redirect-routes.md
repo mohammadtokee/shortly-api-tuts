@@ -1,5 +1,5 @@
 ---
-icon: arrow-right
+icon: up-right-from-square
 ---
 
 # Redirect Routes
@@ -240,6 +240,7 @@ GET /abc123
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 302 Found
 Location: https://example.com
@@ -252,6 +253,7 @@ GET /invalid@link
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
@@ -269,6 +271,7 @@ GET /nonexistent
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 404 Not Found
 Content-Type: application/json
