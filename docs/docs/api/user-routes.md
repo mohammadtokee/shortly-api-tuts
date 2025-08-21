@@ -14,34 +14,16 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 
 ## 🔑 Available Endpoints
 
-### 1. Get Current User Profile
+## 1. Get Current User Profile
 
 * **Endpoint:** `GET /users/me`
 * **Description:** Retrieve the authenticated user's profile information
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-```
-
-**Response:** `200 OK`
-
-```json
-{
-  "user": {
-    "_id": "user_id_here",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "role": "user",
-    "totalVisitCount": 150,
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-15T10:30:00.000Z"
-  }
-}
-```
+{% openapi-operation spec="shortly-api" path="/users/me" method="get" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -49,31 +31,16 @@ Authorization: Bearer <access_token>
 * Excludes sensitive fields like password and tokens
 * Includes visit count analytics
 
-### 2. Update Current User Profile
+## 2. Update Current User Profile
 
 * **Endpoint:** `PUT /users/me`
 * **Description:** Update the authenticated user's profile information
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-Content-Type: application/json
-```
-
-**Request Body (all fields optional):**
-
-```json
-{
-  "name": "John Smith",
-  "email": "johnsmith@example.com",
-  "new_password": "newSecurePassword123"
-}
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/users/me" method="patch" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -82,20 +49,16 @@ Content-Type: application/json
 * Email changes are validated for uniqueness
 * Role cannot be changed via this endpoint
 
-### 3. Delete Current User Account
+## 3. Delete Current User Account
 
 * **Endpoint:** `DELETE /users/me`
 * **Description:** Delete the authenticated user's account and all associated links
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/users/me" method="delete" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -110,7 +73,7 @@ Authorization: Bearer <access_token>
 
 * **name:** 2-50 characters, optional
 * **email:** Valid email format, optional, unique
-* **new_password:** Minimum 8 characters, optional
+* **new\_password:** Minimum 8 characters, optional
 
 ### Email Validation Rules
 
@@ -130,19 +93,9 @@ Authorization: Bearer <access_token>
 
 ### User Response
 
-```json
-{
-  "user": {
-    "_id": "string",
-    "name": "string",
-    "email": "string",
-    "role": "user | admin",
-    "totalVisitCount": "number",
-    "createdAt": "date-time",
-    "updatedAt": "date-time"
-  }
-}
-```
+{% openapi-schemas spec="shortly-api" schemas="User" grouped="false" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-schemas %}
 
 ### User Model Fields
 

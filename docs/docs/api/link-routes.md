@@ -14,47 +14,16 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 
 ## 🔑 Available Endpoints
 
-### 1. Create Short Link
+## 1. Create Short Link
 
 * **Endpoint:** `POST /links`
 * **Description:** Generate a new short link for the given destination URL
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 100 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-Content-Type: application/json
-```
-
-**Request Body:**
-
-```json
-{
-  "title": "My Website",
-  "destination": "https://example.com",
-  "backHalf": "my-site"
-}
-```
-
-**Response:** `200 OK`
-
-```json
-{
-  "link": {
-    "_id": "link_id_here",
-    "title": "My Website",
-    "destination": "https://example.com",
-    "backHalf": "my-site",
-    "shortLink": "https://shortly.com/my-site",
-    "creator": "user_id_here",
-    "totalVisitCount": 0,
-    "createdAt": "2024-01-15T10:00:00.000Z",
-    "updatedAt": "2024-01-15T10:00:00.000Z"
-  }
-}
-```
+{% openapi-operation spec="shortly-api" path="/links" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -62,23 +31,17 @@ Content-Type: application/json
 * `title` and `destination` are required
 * Auto-generates unique short link identifier
 
-### 2. Get User's Links
+## 2. Get User's Links
 
 * **Endpoint:** `GET /links`
 * **Description:** Retrieve paginated list of links created by the authenticated user
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 100 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-```
-
 **Query Parameters:**
 
 * `search` - Search term for link titles (default: "")
-* `sortby` - Sort field and order (default: createdAt_desc)
+* `sortby` - Sort field and order (default: createdAt\_desc)
 * `offset` - Items to skip (0-based, default: 0)
 * `limit` - Items per page (1-100, default: 100)
 
@@ -97,56 +60,20 @@ Authorization: Bearer <access_token>
 GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 ```
 
-**Response:** `200 OK`
+{% openapi-operation spec="shortly-api" path="/links" method="get" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
-```json
-{
-  "total": 150,
-  "offset": 0,
-  "limit": 50,
-  "next": "/links?search=website&offset=50&limit=50&sortby=createdAt_desc",
-  "prev": null,
-  "links": [
-    {
-      "_id": "link_id_1",
-      "title": "My Website",
-      "destination": "https://example.com",
-      "backHalf": "my-site",
-      "shortLink": "https://shortly.com/my-site",
-      "creator": "user_id_here",
-      "totalVisitCount": 150,
-      "createdAt": "2024-01-01T00:00:00.000Z",
-      "updatedAt": "2024-01-15T10:00:00.000Z"
-    }
-  ]
-}
-```
-
-### 3. Update Link
+## 3. Update Link
 
 * **Endpoint:** `PUT /links/{linkId}`
 * **Description:** Update an existing link (only by creator or admin)
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 100 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-Content-Type: application/json
-```
-
-**Request Body (all fields optional):**
-
-```json
-{
-  "title": "Updated Website Title",
-  "destination": "https://new-example.com",
-  "backHalf": "new-half"
-}
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/links/{linkId}" method="patch" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -154,20 +81,16 @@ Content-Type: application/json
 * All fields are optional - only update what you need
 * `backHalf` changes affect the short URL
 
-### 4. Delete Link
+## 4. Delete Link
 
 * **Endpoint:** `DELETE /links/{linkId}`
 * **Description:** Delete a link (only by creator or admin)
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 100 requests per 15 minutes
 
-**Headers Required:**
-
-```http
-Authorization: Bearer <access_token>
-```
-
-**Response:** `204 No Content`
+{% openapi-operation spec="shortly-api" path="/links/{linkId}" method="delete" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-operation %}
 
 **Notes:**
 
@@ -199,34 +122,15 @@ Authorization: Bearer <access_token>
 
 ### Link Response
 
-```json
-{
-  "link": {
-    "_id": "string",
-    "title": "string",
-    "destination": "string",
-    "backHalf": "string",
-    "shortLink": "string",
-    "creator": "string",
-    "totalVisitCount": "number",
-    "createdAt": "date-time",
-    "updatedAt": "date-time"
-  }
-}
-```
+{% openapi-schemas spec="shortly-api" schemas="LinkResponse" grouped="false" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-schemas %}
 
 ### Paginated Links Response
 
-```json
-{
-  "total": "number",
-  "offset": "number",
-  "limit": "number",
-  "next": "string | null",
-  "prev": "string | null",
-  "links": ["Link"]
-}
-```
+{% openapi-schemas spec="shortly-api" schemas="PaginatedLinksResponse" grouped="false" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% endopenapi-schemas %}
 
 ### Link Model Fields
 
