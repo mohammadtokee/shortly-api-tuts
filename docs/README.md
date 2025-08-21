@@ -1,8 +1,7 @@
 ---
 icon: house-window
-cover: >-
-  https://images.unsplash.com/photo-1645811791284-85468ed10a64?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwyfHxncmVlbiUyMGdyYWRpZW50fGVufDB8fHx8MTc1NTgwNTY5MHww&ixlib=rb-4.1.0&q=85
-coverY: -552.6624068157612
+cover: .gitbook/assets/gitbook-banner.png
+coverY: 0
 layout:
   width: default
   cover:
@@ -11,7 +10,7 @@ layout:
   title:
     visible: true
   description:
-    visible: true
+    visible: false
   tableOfContents:
     visible: true
   outline:
