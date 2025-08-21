@@ -1,6 +1,6 @@
 ---
 icon: house-window
-cover: .gitbook/assets/Frame 2.png
+cover: .gitbook/assets/introduction-banner.png
 coverY: 0
 layout:
   width: default
