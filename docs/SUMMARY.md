@@ -8,7 +8,7 @@
 * [Getting Started](docs/getting-started/installation.md)
 * [Environment Setup](docs/getting-started/environment.md)
 
-## 🔗 API Reference
+## API Reference
 
 * [API Overview](docs/api/README.md)
 * [Base Route](docs/api/base.md)
