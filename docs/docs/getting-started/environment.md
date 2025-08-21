@@ -26,10 +26,10 @@ cp .env.example .env
 
 ### Server Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `PORT` | Server port number | `3000` | ✅ |
-| `NODE_ENV` | Environment mode | `development` | ✅ |
+| Variable   | Description        | Default       | Required |
+| ---------- | ------------------ | ------------- | -------- |
+| `PORT`     | Server port number | `3000`        | ✅        |
+| `NODE_ENV` | Environment mode   | `development` | ✅        |
 
 ```bash
 # Server Configuration
@@ -39,9 +39,9 @@ NODE_ENV=development
 
 ### Database Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `MONGODB_URI` | MongoDB connection string | - | ✅ |
+| Variable      | Description               | Default | Required |
+| ------------- | ------------------------- | ------- | -------- |
+| `MONGODB_URI` | MongoDB connection string | -       | ✅        |
 
 ```bash
 # Database Configuration
@@ -66,12 +66,12 @@ MONGODB_URI=mongodb://localhost:27017/shortly?retryWrites=true&w=majority
 
 ### JWT Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `JWT_ACCESS_SECRET` | Secret for access tokens | - | ✅ |
-| `JWT_REFRESH_SECRET` | Secret for refresh tokens | - | ✅ |
-| `JWT_ACCESS_EXPIRES_IN` | Access token lifetime | `1h` | ❌ |
-| `JWT_REFRESH_EXPIRES_IN` | Refresh token lifetime | `7d` | ❌ |
+| Variable                 | Description               | Default | Required |
+| ------------------------ | ------------------------- | ------- | -------- |
+| `JWT_ACCESS_SECRET`      | Secret for access tokens  | -       | ✅        |
+| `JWT_REFRESH_SECRET`     | Secret for refresh tokens | -       | ✅        |
+| `JWT_ACCESS_EXPIRES_IN`  | Access token lifetime     | `1h`    | ❌        |
+| `JWT_REFRESH_EXPIRES_IN` | Refresh token lifetime    | `7d`    | ❌        |
 
 ```bash
 # JWT Configuration
@@ -83,19 +83,19 @@ JWT_REFRESH_EXPIRES_IN=7d
 
 **Security Recommendations:**
 
-- Use **strong, random secrets** (at least 32 characters)
-- **Never commit** secrets to version control
-- Use **different secrets** for access and refresh tokens
-- **Rotate secrets** regularly in production
+* Use **strong, random secrets** (at least 32 characters)
+* **Never commit** secrets to version control
+* Use **different secrets** for access and refresh tokens
+* **Rotate secrets** regularly in production
 
 ### Email Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `SMTP_HOST` | SMTP server hostname | - | ✅ |
-| `SMTP_PORT` | SMTP server port | `587` | ❌ |
-| `SMTP_USER` | SMTP username/email | - | ✅ |
-| `SMTP_PASS` | SMTP password/app password | - | ✅ |
+| Variable    | Description                | Default | Required |
+| ----------- | -------------------------- | ------- | -------- |
+| `SMTP_HOST` | SMTP server hostname       | -       | ✅        |
+| `SMTP_PORT` | SMTP server port           | `587`   | ❌        |
+| `SMTP_USER` | SMTP username/email        | -       | ✅        |
+| `SMTP_PASS` | SMTP password/app password | -       | ✅        |
 
 ```bash
 # Email Configuration
@@ -127,9 +127,9 @@ SMTP_PORT=587
 
 ### Client Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `CLIENT_ORIGIN` | Frontend application URL | - | ✅ |
+| Variable        | Description              | Default | Required |
+| --------------- | ------------------------ | ------- | -------- |
+| `CLIENT_ORIGIN` | Frontend application URL | -       | ✅        |
 
 ```bash
 # Client Configuration
@@ -151,9 +151,9 @@ CLIENT_ORIGIN=http://localhost:3000,https://shortly.codewithsadee.com
 
 ### Cookie Configuration
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `COOKIE_MAX_AGE` | Cookie expiration time (ms) | `604800000` | ❌ |
+| Variable         | Description                 | Default     | Required |
+| ---------------- | --------------------------- | ----------- | -------- |
+| `COOKIE_MAX_AGE` | Cookie expiration time (ms) | `604800000` | ❌        |
 
 ```bash
 # Cookie Configuration
@@ -346,7 +346,9 @@ if (config.port < 1 || config.port > 65535) {
 
 ### Common Issues
 
-#### 1. Environment Variables Not Loading
+<details>
+
+<summary>1. Environment Variables Not Loading</summary>
 
 ```bash
 # Check if .env file exists
@@ -359,7 +361,11 @@ chmod 600 .env
 cat .env
 ```
 
-#### 2. Database Connection Failed
+</details>
+
+<details>
+
+<summary>2. Database Connection Failed</summary>
 
 ```bash
 # Test MongoDB connection
@@ -369,7 +375,11 @@ mongosh "mongodb://localhost:27017/shortly"
 sudo systemctl status mongod
 ```
 
-#### 3. JWT Errors
+</details>
+
+<details>
+
+<summary>3. JWT Errors</summary>
 
 ```bash
 # Verify JWT secrets are set
@@ -380,21 +390,25 @@ echo $JWT_REFRESH_SECRET
 echo $JWT_ACCESS_SECRET | wc -c
 ```
 
-## 📚 Related Documentation
+</details>
 
-- [Installation Guide](installation.md) - Setup and installation
-- [API Reference](../api/README.md) - API documentation
-- [Security Features](../reference/security.md) - Security configuration
-- [Data Models](../reference/models.md) - Database setup
-
+{% hint style="warning" %}
 ## 📝 Notes
 
-- **Never commit** `.env` files to version control
-- **Use strong secrets** for JWT tokens
-- **Validate all inputs** before using
-- **Test configuration** in each environment
-- **Monitor logs** for configuration errors
+* **Never commit** `.env` files to version control
+* **Use strong secrets** for JWT tokens
+* **Validate all inputs** before using
+* **Test configuration** in each environment
+* **Monitor logs** for configuration errors
+{% endhint %}
 
----
+## 📚 Related Documentation
+
+* [Installation Guide](installation.md) - Setup and installation
+* [API Reference](../api/) - API documentation
+* [Security Features](../reference/security.md) - Security configuration
+* [Data Models](../reference/models.md) - Database setup
+
+***
 
 **Next step:** After configuring your environment, proceed to [Installation Guide](installation.md) to start the application.
