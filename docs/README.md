@@ -1,5 +1,25 @@
 ---
 icon: house-window
+cover: >-
+  https://images.unsplash.com/photo-1645811791284-85468ed10a64?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwyfHxncmVlbiUyMGdyYWRpZW50fGVufDB8fHx8MTc1NTgwNTY5MHww&ixlib=rb-4.1.0&q=85
+coverY: -552.6624068157612
+layout:
+  width: default
+  cover:
+    visible: true
+    size: hero
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
 ---
 
 # Introduction
