@@ -33,22 +33,25 @@ Welcome to the Shortly API documentation! This repository contains comprehensive
 
 ### 🎯 Quick Start
 
-#### For Developers
-
-1. Start with [Project Documentation](docs/)
-2. Follow the [Installation Guide](docs/getting-started/installation.md)
-3. Configure your [Environment](docs/getting-started/environment.md)
-
-#### For API Integration
-
-1. Use the [OpenAPI Specification](api-specs/openapi.yaml)
-2. Test with [Swagger UI](https://editor.swagger.io/)
-3. Import into [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/)
+<table data-card-size="large" data-view="cards"><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><h4>For Developers</h4></td><td><ol><li>Start with <a href="docs/">Project Documentation</a></li></ol><ol start="2"><li>Follow the <a href="docs/getting-started/installation.md">Installation Guide</a></li></ol><ol start="3"><li>Configure your <a href="docs/getting-started/environment.md">Environment</a></li></ol></td></tr><tr><td><h4>For API Integration</h4></td><td><ol><li>Use the <a href="api-specs/openapi.yaml">OpenAPI Specification</a></li></ol><ol start="2"><li>Test with <a href="https://editor.swagger.io/">Swagger UI</a></li></ol><ol start="3"><li>Import into <a href="https://www.postman.com/">Postman</a> or <a href="https://insomnia.rest/">Insomnia</a></li></ol></td></tr></tbody></table>
 
 ### 🔗 Base URLs
 
-* **Development:** `http://localhost:3000`
-* **Production:** `https://api.shortly.codewithsadee.com`
+{% tabs %}
+{% tab title="Development" %}
+```url
+http://localhost:3000
+```
+{% endtab %}
+
+{% tab title="Production" %}
+{% code fullWidth="false" %}
+```url
+https://api.shortly.codewithsadee.com
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ### 🚀 Features
 
