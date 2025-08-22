@@ -29,23 +29,7 @@ Welcome to the Shortly API documentation! This repository contains comprehensive
 
 ### 📚 Documentation Sections
 
-#### 1. [Project Documentation](docs/) 📖
-
-Complete project documentation including:
-
-* **Getting Started** - Installation and setup guides
-* **API Reference** - Detailed endpoint documentation
-* **Reference Materials** - Technical implementation details
-* **Development Guides** - Best practices and workflows
-
-#### 2. [API Specifications](api-specs/) 🚀
-
-OpenAPI specifications and testing tools:
-
-* **OpenAPI 3.0.3 Specification** - Machine-readable API definition
-* **Testing Tools** - Swagger UI, Postman, Insomnia integration
-* **Interactive Testing** - Test API endpoints directly
-* **Schema Definitions** - Complete request/response schemas
+<table data-card-size="large" data-view="cards"><thead><tr><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td>Project Documentation 📖</td><td><p>Complete project documentation including:</p><ul><li><strong>Getting Started</strong> - Installation and setup guides</li><li><strong>API Reference</strong> - Detailed endpoint documentation</li><li><strong>Reference Materials</strong> - Technical implementation details</li><li><strong>Development Guides</strong> - Best practices and workflows</li></ul></td><td><a href="docs/">docs</a></td></tr><tr><td>API Specifications 🚀</td><td><p>OpenAPI specifications and testing tools:</p><ul><li><strong>OpenAPI 3.0.3 Specification</strong> - Machine-readable API definition</li><li><strong>Testing Tools</strong> - Swagger UI, Postman, Insomnia integration</li><li><strong>Interactive Testing</strong> - Test API endpoints directly</li><li><strong>Schema Definitions</strong> - Complete request/response schemas</li></ul></td><td><a href="api-specs/">api-specs</a></td></tr></tbody></table>
 
 ### 🎯 Quick Start
 
