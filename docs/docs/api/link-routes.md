@@ -21,8 +21,8 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 100 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/links" method="post" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% openapi-operation spec="shortly-api" path="/links/generate" method="post" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
 **Notes:**
@@ -60,8 +60,8 @@ For complete endpoint details, request/response schemas, and examples, refer to 
 GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 ```
 
-{% openapi-operation spec="shortly-api" path="/links" method="get" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+{% openapi-operation spec="shortly-api" path="/links/my-links" method="get" %}
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
 ## 3. Update Link
@@ -72,7 +72,7 @@ GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 * **Rate Limit:** 100 requests per 15 minutes
 
 {% openapi-operation spec="shortly-api" path="/links/{linkId}" method="patch" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
 **Notes:**
@@ -89,7 +89,7 @@ GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 * **Rate Limit:** 100 requests per 15 minutes
 
 {% openapi-operation spec="shortly-api" path="/links/{linkId}" method="delete" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
 **Notes:**
@@ -123,13 +123,13 @@ GET /links?search=website&offset=0&limit=50&sortby=createdAt_desc
 ### Link Response
 
 {% openapi-schemas spec="shortly-api" schemas="LinkResponse" grouped="false" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-schemas %}
 
 ### Paginated Links Response
 
 {% openapi-schemas spec="shortly-api" schemas="PaginatedLinksResponse" grouped="false" %}
-[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162013Z&X-Amz-Expires=172800&X-Amz-Signature=940a65b1d5af52348d8537f6b4165afd0573df191b8448de224fe181adb0ec05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+[OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/906ff56b8084d52f48e2cb2534a1cda20ca0742a9a0495117e04d8c0fa82fd33.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250822%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250822T014756Z&X-Amz-Expires=172800&X-Amz-Signature=d67cc8033c8369eb429b1e4aa306c93037640ec8cdbe6f82ea0b97414e2428be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-schemas %}
 
 ### Link Model Fields
