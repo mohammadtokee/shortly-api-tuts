@@ -7,6 +7,7 @@
  * Custom modules
  */
 import config from '@/config';
+import { logger } from '@/lib/winston';
 
 /**
  * Types
@@ -25,8 +26,10 @@ const corsOptions: CorsOptions = {
       callback(
         config.NODE_ENV === 'development'
           ? null
-          : new Error('Not allowed by CORS'),
+          : new Error(`CORS error: ${requestOrigin} is not allowed by CORS`),
+        false,
       );
+      logger.warn(`CORS error: ${requestOrigin} is not allowed by CORS`);
     }
   },
 };
