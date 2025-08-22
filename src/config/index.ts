@@ -13,7 +13,7 @@ dotenv.config();
 /**
  * Constants
  */
-const CORS_WHITELIST = ['https://shortly.codewithsadee.com', 'https://codewithsadee.gitbook.io'];
+const CORS_WHITELIST = ['https://shortly.codewithsadee.com', 'https://codewithsadee.gitbook.io', 'https://betterstack.com'];
 const _1H_IN_MILLISECONDS = 1000 * 60 * 60;
 const _7DAYS_IN_MILLISECONDS = 1000 * 60 * 60 * 24 * 7;
 
