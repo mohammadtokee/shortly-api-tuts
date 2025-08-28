@@ -12,12 +12,12 @@ User routes handle profile management, account updates, and user account operati
 
 ## 1. Get Current User Profile
 
-* **Endpoint:** `GET /users/me`
+* **Endpoint:** `GET /users/current`
 * **Description:** Retrieve the authenticated user's profile information
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/users/me" method="get" %}
+{% openapi-operation spec="shortly-api" path="/users/current" method="get" %}
 [OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
@@ -29,12 +29,12 @@ User routes handle profile management, account updates, and user account operati
 
 ## 2. Update Current User Profile
 
-* **Endpoint:** `PUT /users/me`
+* **Endpoint:** `PUT /users/current`
 * **Description:** Update the authenticated user's profile information
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/users/me" method="patch" %}
+{% openapi-operation spec="shortly-api" path="/users/current" method="patch" %}
 [OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
@@ -47,12 +47,12 @@ User routes handle profile management, account updates, and user account operati
 
 ## 3. Delete Current User Account
 
-* **Endpoint:** `DELETE /users/me`
+* **Endpoint:** `DELETE /users/current`
 * **Description:** Delete the authenticated user's account and all associated links
 * **Authentication:** Required (Bearer token)
 * **Rate Limit:** 50 requests per 15 minutes
 
-{% openapi-operation spec="shortly-api" path="/users/me" method="delete" %}
+{% openapi-operation spec="shortly-api" path="/users/current" method="delete" %}
 [OpenAPI shortly-api](https://gitbook-x-prod-openapi.4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/raw/cf964ce372f8754823f4a7abbf815324f3aa54f6870bcfa4682464a6f2d69062.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20250821%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250821T162510Z&X-Amz-Expires=172800&X-Amz-Signature=5aedaa1bfbaf52e25dfdd2745d83cb5e4f4e7da8691973abe6ddd518e204516b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}
 
@@ -201,21 +201,3 @@ Authenticate User → Delete All User Links → Delete User Account → Return 2
 * **Input sanitization** - All data validated before storage
 * **SQL injection prevention** - MongoDB ODM protection
 * **XSS prevention** - Input sanitization and validation
-
-## 🔗 Related Documentation
-
-* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete endpoint details
-* [Authentication Guide](../reference/authentication.md) - JWT implementation
-* [Data Models](../reference/models.md) - User schema details
-* [Security Features](../reference/security.md) - Security best practices
-* [Error Handling](../reference/errors.md) - Comprehensive error guide
-
-## 📝 Implementation Notes
-
-* **Password hashing** uses industry-standard bcrypt algorithm
-* **Email validation** includes format and uniqueness checks
-* **Profile updates** are atomic operations
-* **Account deletion** includes cascading link removal
-* **Visit counting** aggregates across all user's links
-* **Rate limiting** applies per authenticated user
-* **Input validation** occurs at multiple levels
