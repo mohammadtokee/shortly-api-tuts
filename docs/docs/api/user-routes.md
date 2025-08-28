@@ -8,10 +8,6 @@ icon: user
 
 User routes handle profile management, account updates, and user account operations. These endpoints allow authenticated users to manage their personal information and account settings.
 
-## 📚 OpenAPI Reference
-
-For complete endpoint details, request/response schemas, and examples, refer to the [OpenAPI Specification](../../api-specs/openapi.yaml) under the **Users** tag.
-
 ## 🔑 Available Endpoints
 
 ## 1. Get Current User Profile

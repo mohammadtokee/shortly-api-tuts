@@ -45,11 +45,9 @@ http://localhost:3000
 {% endtab %}
 
 {% tab title="Production" %}
-{% code fullWidth="false" %}
 ```url
 https://api.shortly.codewithsadee.com
 ```
-{% endcode %}
 {% endtab %}
 {% endtabs %}
 

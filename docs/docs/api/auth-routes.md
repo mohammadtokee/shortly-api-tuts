@@ -8,10 +8,6 @@ icon: lock
 
 Authentication routes handle user registration, login, logout, and token management. These endpoints provide secure access control for the Shortly API.
 
-## 📚 OpenAPI Reference
-
-For complete endpoint details, request/response schemas, and examples, refer to the [OpenAPI Specification](../../api-specs/openapi.yaml) under the **Authentication** tag.
-
 ## 🔑 Available Endpoints
 
 ## 1. User Registration

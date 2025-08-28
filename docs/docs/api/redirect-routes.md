@@ -8,10 +8,6 @@ icon: up-right-from-square
 
 Redirect routes handle the public redirection of short links to their destination URLs. This endpoint is publicly accessible and includes visit tracking and analytics.
 
-## 📚 OpenAPI Reference
-
-For complete endpoint details, request/response schemas, and examples, refer to the [OpenAPI Specification](../../api-specs/openapi.yaml) under the **Redirect** tag.
-
 ## 🔑 Available Endpoints
 
 ## 1. Redirect to Destination

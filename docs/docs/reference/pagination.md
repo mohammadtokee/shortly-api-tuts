@@ -62,11 +62,8 @@ interface RequestQuery {
 // Search in link titles using regex
 const searchRegex = new RegExp(`\\b${search}\\b`, 'gi');
 
-const links = await Link.find({ creator: userId })
+const links = await Link.find()
   .where('title', searchRegex)  // Apply search filter
-  .sort({ [sortField]: sortOrder })
-  .skip(offset)
-  .limit(limit)
   .lean()
   .exec();
 ```
@@ -253,19 +250,3 @@ const defaultQuery = {
 * **Result limiting** - Prevent excessive memory usage
 * **Streaming** - Consider streaming for large datasets
 * **Caching** - Cache frequently accessed pages
-
-## 🔗 Related Documentation
-
-* [Link Routes](../api/link-routes.md) - Link management endpoints
-* [Data Models](models.md) - Database schema details
-* [API Base Route](../api/base.md) - General API information
-* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
-
-## 📝 Implementation Notes
-
-* **Offset-based pagination** provides consistent performance
-* **Search functionality** works across all text fields
-* **Sorting** is applied before pagination for accuracy
-* **Navigation links** are generated dynamically
-* **Performance** scales well with large datasets
-* **Flexible** - Easy to customize for different use cases

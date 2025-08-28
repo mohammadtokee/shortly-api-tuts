@@ -8,10 +8,6 @@ icon: house
 
 The base route provides fundamental API information, configuration details, and serves as the entry point for understanding the Shortly API structure and requirements.
 
-## 📚 OpenAPI Reference
-
-For complete endpoint details, request/response schemas, and examples, refer to the [OpenAPI Specification](../../api-specs/openapi.yaml) under the **Base** tag.
-
 ## 🏠 Base Endpoint
 
 ### API Information
@@ -29,7 +25,7 @@ For complete endpoint details, request/response schemas, and examples, refer to 
   "version": "1.0.0",
   "status": "running",
   "timestamp": "2024-01-15T10:00:00.000Z",
-  "documentation": "https://api.shortly.codewithsadee.com/docs"
+  "documentation": "https://codewithsadee.gitbook.com/shortly"
 }
 ```
 
@@ -240,22 +236,6 @@ Referrer-Policy: strict-origin-when-cross-origin
 }
 ```
 
-## 📈 Monitoring & Logging
-
-### Logging Configuration
-
-* **Log Level:** Configurable per environment
-* **Format:** Structured JSON logging
-* **Output:** Console and file logging
-* **Rotation:** Automatic log file rotation
-
-### Metrics Tracked
-
-* **Request Count** - Total API requests
-* **Response Times** - API performance metrics
-* **Error Rates** - Error frequency and types
-* **Rate Limit Violations** - Abuse prevention metrics
-
 ## 🔧 Development Tools
 
 ### OpenAPI Integration
@@ -264,39 +244,6 @@ Referrer-Policy: strict-origin-when-cross-origin
 * **Code Generation** - Client library generation
 * **Documentation** - Automated API docs
 * **Validation** - Request/response validation
-
-### Testing Support
-
-* **Example Data** - Ready-to-use test data
-* **Error Scenarios** - Comprehensive error examples
-* **Authentication Flows** - Complete auth examples
-* **Rate Limit Testing** - Limit testing scenarios
-
-## 📖 Related Documentation
-
-* [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
-* [Authentication Routes](auth-routes.md) - JWT implementation
-* [Security Features](../reference/security.md) - Security best practices
-* [Rate Limiting](../reference/rate-limits.md) - API limits and policies
-* [Error Handling](../reference/errors.md) - Error management
-
-## 📝 Implementation Notes
-
-* **Base route** provides API overview and status
-* **CORS protection** is enforced in production
-* **Rate limiting** applies to all endpoints
-* **Security headers** are automatically applied
-* **Health monitoring** tracks API performance
-* **Error handling** is consistent across all endpoints
-* **Documentation** is always up-to-date
-
-## 🚀 Getting Started
-
-1. **Check API status** - Verify the API is running
-2. **Review configuration** - Understand environment setup
-3. **Set up authentication** - Get your API credentials
-4. **Test endpoints** - Use the provided examples
-5. **Monitor usage** - Track your API consumption
 
 ## 🔗 External Resources
 

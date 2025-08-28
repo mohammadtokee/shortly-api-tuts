@@ -105,64 +105,6 @@ Authorization: Bearer <your-access-token>
 * **Link Management:** 100 requests per 15 minutes
 * **Public Redirects:** 1000 requests per 15 minutes
 
-## 📝 Response Format
-
-### Success Response
-
-```json
-{
-  "data": "Response data here",
-  "message": "Success message"
-}
-```
-
-### Error Response
-
-```json
-{
-  "error": "ErrorType",
-  "message": "Human-readable error message",
-  "details": [
-    {
-      "field": "fieldName",
-      "message": "Field-specific error message"
-    }
-  ]
-}
-```
-
-## 🔍 Data Models
-
-### User Model
-
-```json
-{
-  "_id": "string",
-  "name": "string",
-  "email": "string",
-  "role": "user | admin",
-  "totalVisitCount": "number",
-  "createdAt": "date-time",
-  "updatedAt": "date-time"
-}
-```
-
-### Link Model
-
-```json
-{
-  "_id": "string",
-  "title": "string",
-  "destination": "string",
-  "backHalf": "string",
-  "shortLink": "string",
-  "creator": "string",
-  "totalVisitCount": "number",
-  "createdAt": "date-time",
-  "updatedAt": "date-time"
-}
-```
-
 ## 🛡️ Security Features
 
 * **JWT Authentication** - Secure token-based access
@@ -188,30 +130,6 @@ Authorization: Bearer <your-access-token>
 * **Code Generation** - Client library generation
 * **Documentation** - Automated API docs
 * **Validation** - Request/response validation
-
-### Testing Support
-
-* **Example Data** - Ready-to-use test data
-* **Error Scenarios** - Comprehensive error examples
-* **Authentication Flows** - Complete auth examples
-* **Rate Limit Testing** - Limit testing scenarios
-
-## 📖 Related Documentation
-
-* [OpenAPI Specification](../api-specs/openapi.yaml) - Complete API definition
-* [Getting Started](broken-reference) - Setup and installation
-* [Authentication Guide](broken-reference) - Security implementation
-* [Data Models](broken-reference) - Schema definitions
-* [Error Handling](broken-reference) - Error management
-* [Rate Limiting](broken-reference) - API limits and policies
-
-## 🚀 Getting Started
-
-1. **Review** [**Base Route**](api/base.md) for API fundamentals
-2. **Set up authentication** using [Authentication Routes](api/auth-routes.md)
-3. **Create your first link** with [Link Routes](api/link-routes.md)
-4. **Manage your profile** via [User Routes](api/user-routes.md)
-5. **Test redirection** with [Redirect Routes](api/redirect-routes.md)
 
 ## 🔗 External Resources
 

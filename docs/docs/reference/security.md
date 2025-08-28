@@ -110,16 +110,6 @@ const corsOptions = {
 - **Window-Based Reset** - Automatic limit reset every 15 minutes
 - **Graceful Degradation** - Informative error messages
 
-### Rate Limit Configuration
-
-```typescript
-// Rate limiting per route type
-const authRateLimit = { windowMs: 15 * 60 * 1000, max: 5 };
-const userRateLimit = { windowMs: 15 * 60 * 1000, max: 50 };
-const linkRateLimit = { windowMs: 15 * 60 * 1000, max: 100 };
-const publicRateLimit = { windowMs: 15 * 60 * 1000, max: 1000 };
-```
-
 ## 🔒 Data Security
 
 ### Password Security
@@ -189,18 +179,3 @@ Referrer-Policy: strict-origin-when-cross-origin
 - **Security Issues:** Report via GitHub issues
 - **Urgent Issues:** Contact maintainers directly
 - **Responsible Disclosure:** Follow security best practices
-
-## 🔗 Related Documentation
-
-- [Authentication Guide](authentication.md) - JWT implementation
-- [Rate Limits](rate-limits.md) - Abuse prevention
-- [Error Handling](errors.md) - Security error responses
-- [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
-
-## 📝 Implementation Notes
-
-- **Security headers** are automatically applied via Helmet middleware
-- **Rate limiting** is implemented per route category
-- **CORS protection** is enforced in production environments
-- **Password hashing** uses industry-standard bcrypt algorithm
-- **Token expiration** is enforced at multiple levels

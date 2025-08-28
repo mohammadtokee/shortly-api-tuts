@@ -8,10 +8,6 @@ icon: link-simple
 
 Link routes handle the creation, management, and analytics of short links. These endpoints allow authenticated users to generate, update, and monitor their URL shortening services.
 
-## 📚 OpenAPI Reference
-
-For complete endpoint details, request/response schemas, and examples, refer to the [OpenAPI Specification](../../api-specs/openapi.yaml) under the **Links** tag.
-
 ## 🔑 Available Endpoints
 
 ## 1. Create Short Link

@@ -63,22 +63,6 @@ Retry-After: 900
 
 ## 🔧 Implementation Details
 
-### Rate Limiting Middleware
-
-```typescript
-// Example rate limiting configuration
-const rateLimit = {
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: {
-    code: 'TooManyRequests',
-    message: 'Rate limit exceeded. Try again in 15 minutes.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-};
-```
-
 ### Storage Options
 
 - **Memory Store** - Default, in-memory storage
@@ -93,12 +77,6 @@ const rateLimit = {
 - **Limit Exceeded** - Number of blocked requests
 - **Peak Usage** - Highest request rates
 - **Geographic Distribution** - Requests by location
-
-### Monitoring Tools
-
-- **Built-in Logging** - Rate limit events logged
-- **Metrics Export** - Prometheus-compatible metrics
-- **Alerting** - Notifications for unusual patterns
 
 ## 🛡️ Best Practices
 
@@ -159,18 +137,3 @@ Content-Type: application/json
   "message": "Rate limit exceeded. Try again in 15 minutes."
 }
 ```
-
-## 🔗 Related Documentation
-
-- [API Base Route](../api/base.md) - General API information
-- [Error Handling](errors.md) - Comprehensive error guide
-- [Security Features](security.md) - Security implementation
-- [OpenAPI Specification](../../api-specs/openapi.yaml) - Complete API definition
-
-## 📝 Implementation Notes
-
-- **Rate limiting** applies per IP address for public endpoints
-- **Authentication** is required for most rate-limited endpoints
-- **Different limits** apply to different route categories
-- **Window timing** is synchronized across all API instances
-- **Headers** provide real-time usage information
